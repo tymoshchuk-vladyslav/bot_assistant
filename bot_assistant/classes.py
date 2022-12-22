@@ -11,7 +11,6 @@ Phone(Field)
 Birthday(Field)
 AddressContact(Field)
 EmailContact(Field)
-Notes(Field)
 """
 
 
@@ -76,13 +75,5 @@ class EmailContact(Field):
     """
     Email контакта.
     Додається до списку email_contact, який створюється при ініціалізації класу Record.
-    """
-    pass
-
-
-class Notes(Field):
-    """
-    Нотатки до контакта.
-    Додаються до списку notes_contact, який створюється при ініціалізації класу Record.
     """
     pass
