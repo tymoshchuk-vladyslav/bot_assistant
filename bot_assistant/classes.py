@@ -1,4 +1,6 @@
 from collections import UserDict
+from datetime import date
+import re
 
 
 """
@@ -37,7 +39,18 @@ class Field:
     """
     Батьківський клас для Name, Phone, Birthday, AddressContact, EmailContact.
     """
-    pass
+
+    def __init__(self, value):
+        self.__value = value
+        self.value = value
+
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, value):
+        self.__value = value
 
 
 class Name(Field):
@@ -60,7 +73,17 @@ class Birthday(Field):
     День народження контакта.
     Додається до списку birthday, який створюється при ініціалізації класу Record.
     """
-    pass
+    @Field.value.setter
+    def value(self, value):
+        if re.search(r"\b\d{2}[.]\d{2}[.]\d{4}", value):
+            value_splitted = value.split(".")
+            self.__value = date(year=int(value_splitted[2]), month=int(
+                value_splitted[1]), day=int(value_splitted[0]))
+        else:
+            raise Exception("Birthday must be in DD.MM.YYYY format")
+
+    def __str__(self) -> str:
+        return self.__value.strftime("%d.%m.%Y")
 
 
 class AddressContact(Field):

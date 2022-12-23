@@ -1,4 +1,4 @@
-from classes import AddressBook
+from classes import AddressBook, Birthday
 from colorama import Fore, Style
 
 
