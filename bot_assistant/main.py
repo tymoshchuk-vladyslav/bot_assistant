@@ -1,4 +1,4 @@
-from classes import AddressBook
+from classes import AddressBook, Birthday, Phone, Record
 from colorama import Fore, Style
 from sort import sort_fun
 
@@ -38,6 +38,23 @@ def add_address(name):
     user_address = input("Введіть адресу: ")
     record.add_address(user_address)
     return f"Адрес {user_address}. Додано до контакту {name}."
+
+
+def add(name, phone):
+
+    if name in PHONE_BOOK:
+        return f"{name} вже у словнику"
+
+    record = Record(name)
+
+    if not Phone(phone).value:
+        PHONE_BOOK.add_record(record)
+        return f"{name} був доданий до словника, але телефон неправильного формату"
+
+    else:
+        PHONE_BOOK.add_record(record)
+        record.add_phone(name, phone, PHONE_BOOK)
+        return f"{name} з телефоном {phone} було додано до словника "
 
 
 def good_bye():
@@ -122,7 +139,8 @@ def main():
     """
 
     while True:
-        user_input = input("Введіть будь ласка команду: (або використай команду help)\n")
+        user_input = input(
+            "Введіть будь ласка команду: (або використай команду help)\n")
         result = change_input(user_input)
         print(result)
         if result == "Good Bye!":

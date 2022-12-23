@@ -1,4 +1,5 @@
 from collections import UserDict
+from datetime import date
 import re
 
 
@@ -36,6 +37,9 @@ class Record:
         :return:
         """
         self.address.append(AddressContact(address))
+    
+    def add_phone(self, name, phone, address_book):
+        address_book[name].phones.append(Phone(phone))
 
     def change_address(self, address):
         """
@@ -135,7 +139,17 @@ class Birthday(Field):
     День народження контакта.
     Додається до списку birthday, який створюється при ініціалізації класу Record.
     """
-    pass
+    @Field.value.setter
+    def value(self, value):
+        if re.search(r"\b\d{2}[.]\d{2}[.]\d{4}", value):
+            value_splitted = value.split(".")
+            self.__value = date(year=int(value_splitted[2]), month=int(
+                value_splitted[1]), day=int(value_splitted[0]))
+        else:
+            raise Exception("Birthday must be in DD.MM.YYYY format")
+
+    def __str__(self) -> str:
+        return self.__value.strftime("%d.%m.%Y")
 
 
 class AddressContact(Field):
@@ -152,7 +166,8 @@ class AddressContact(Field):
         :return:
         """
         if not value.isalnum():
-            raise ValueError('Невірний адрес, введіть адрес в текстовому форматі.')
+            raise ValueError(
+                'Невірний адрес, введіть адрес в текстовому форматі.')
         self.__value = value
 
 
