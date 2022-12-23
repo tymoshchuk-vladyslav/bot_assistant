@@ -1,5 +1,6 @@
 from classes import AddressBook
 from colorama import Fore, Style
+from sort import sort_fun
 
 
 """
@@ -65,7 +66,7 @@ def break_f():
 
 
 USER_COMMANDS = {
-    None
+    'sort': sort_fun()
 }
 
 
