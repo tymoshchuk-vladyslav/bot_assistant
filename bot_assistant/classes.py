@@ -32,6 +32,9 @@ class Record:
     def add_address(self, address):
         self.address.append(AddressContact(address))
 
+    def add_phone(self, name, phone, address_book):
+        address_book[name].phones.append(Phone(phone))
+
 
 class AddressBook(UserDict):
     """
@@ -123,7 +126,8 @@ class AddressContact(Field):
         :return:
         """
         if not value.isalnum():
-            raise ValueError('Невірний адрес, введіть адрес в текстовому форматі.')
+            raise ValueError(
+                'Невірний адрес, введіть адрес в текстовому форматі.')
         self.__value = value
 
 
