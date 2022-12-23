@@ -39,18 +39,7 @@ class Field:
     """
     Батьківський клас для Name, Phone, Birthday, AddressContact, EmailContact.
     """
-
-    def __init__(self, value):
-        self.__value = value
-        self.value = value
-
-    @property
-    def value(self):
-        return self.__value
-
-    @value.setter
-    def value(self, value):
-        self.__value = value
+    pass
 
 
 class Name(Field):
