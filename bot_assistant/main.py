@@ -7,6 +7,17 @@ from classes import AddressBook
 save_data, search, good_bye, close, exit, .)
 """
 
+
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except (IndexError, ValueError, TypeError, KeyError):
+            return "Try again, please"
+
+    return inner
+
+
 PHONE_BOOK = AddressBook()
 
 
@@ -17,7 +28,7 @@ def helps():
 
 
 USER_COMMANDS = {
-None
+    None
 }
 
 
