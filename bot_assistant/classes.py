@@ -54,7 +54,13 @@ class Record:
         self.birthday = None
 
     def add_address(self, address):
+        """
+        Метод для додавання нового адресу до рекорда.
+        :param address:
+        :return:
+        """
         self.address.append(AddressContact(address))
+
         
     def add_birthday(self, birthday):
         self.birthday = Birthday(birthday)
@@ -69,6 +75,33 @@ class Record:
     def get_addresses(self):
         all_address = [address.value for address in self.address]
         return all_address
+
+
+    def change_address(self, address):
+        """
+        Метод для редагування адресу у контакта.
+        :param address:
+        :return:
+        """
+
+        if len(self.address) == 0:
+            return f"У контакта немає адреси."
+
+        elif len(self.address) == 1:
+            self.address[0] = AddressContact(address)
+            return f"{address}"
+
+        elif len(self.address) > 1:
+            i = -1
+            print(f"Виберіть адресу контакту для редагування.")
+            for adr in self.address:
+                i += 1
+                print(f"№  {i}  :  {adr.value}")
+            inp_user = int(input(f"Введіть №..."))
+            self.address[inp_user] = AddressContact(address)
+            return f"{address}"
+
+
 
 
 class Field:
@@ -167,26 +200,3 @@ class EmailContact(Field):
     Додається до списку email_contact, який створюється при ініціалізації класу Record.
     """
     pass
-
-
-# PB = AddressBook()
-# PB.add_record(Record('Tim'))
-# PB['Tim'].add_phone('+380998887744')
-# PB['Tim'].add_address('dfghdfgdf')
-# PB.add_record(Record('Bil'))
-# PB['Bil'].add_phone('+380112223344')
-# PB['Bil'].add_phone('+380555555555')
-# PB['Bil'].add_address('klklklkk')
-# PB['Bil'].add_birthday('11.01.2000')
-
-# print(PB['Tim'].name.value)
-# print(PB['Tim'].phones[0].value)
-# print(PB['Tim'].address[0].value)
-# print(PB['Bil'].name.value)
-# print(PB['Bil'].phones[0].value)
-# print(PB['Bil'].address[0].value)
-# print(PB['Bil'].phones[1].value)
-# print(PB['Bil'].birthday)
-
-
-# print(PB.search_contacts('44')[1].name.value)

@@ -28,7 +28,6 @@ def input_error(func):
 #################################
 
     
-        
 
 
 @input_error
@@ -118,6 +117,31 @@ def add_birthday(args):
         return f' {user_birthday} was added to {name}'
 
 
+
+
+def change_address(name):
+    """
+    Функція для редагування адреси контакту.
+    :param name:
+    :return:
+    """
+    name = name.title()
+
+    if name not in PHONE_BOOK:
+        return f"{name} імя не знайдено в словнику"
+
+    record = PHONE_BOOK[name]
+    user_address = input("Введіть адресу: ")
+    result = record.change_address(user_address)
+
+    if result in "У контакта немає адреси.":
+        return "У контакта немає адреси."
+
+    return f"у контакта {name} замінено адресу на: {result}"
+
+
+
+
 @input_error
 def search_contacts(args):
     result = ""
@@ -139,14 +163,16 @@ def good_bye(*args):
     
 
 def helps(*args):
+
     commands = [f'{Fore.GREEN}add{Style.RESET_ALL} - will adding new contact to you addressbook in format add: [Name][Phone]',
-                f'{Fore.GREEN}change{Style.RESET_ALL} - will change one of you contact. format for change: [Name][Phone][New phone]',
-                f'{Fore.GREEN}delete{Style.RESET_ALL} - will delete contact. format [name]',
-                f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
-                f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
-                f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook',
-                f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook',
-                f'{Fore.GREEN}add_address{Style.RESET_ALL} - will adding new address to contact in format add_address [Name]']
+           f'{Fore.GREEN}change{Style.RESET_ALL} - will change one of you contact. format for change: [Name][Phone][New phone]',
+           f'{Fore.GREEN}delete{Style.RESET_ALL} - will delete contact. format [name]',
+           f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
+           f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
+           f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook',
+           f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook',
+           f'{Fore.GREEN}add_address{Style.RESET_ALL} - will adding new address to contact in format: add_address [Name]',
+           f'{Fore.GREEN}change_address{Style.RESET_ALL} - will change address contact in format: change_address [Name]']
 
     return '\n'.join(commands)
 
@@ -243,6 +269,7 @@ def change_tag(args):
         else:
             break
 
+
     while True:
         tag = input('Введіть новий тег:\n')
         if tag == 'cancel':
@@ -330,6 +357,7 @@ def fun_name(fun):
         'add_phone': add_phone,
         'add_address': add_address,
         'add_birthday': add_birthday,
+        'change_address': change_address,
         'search_contacts': search_contacts,
         'sort': sort_fun,
         'add_note': add_note,
@@ -345,6 +373,7 @@ def fun_name(fun):
 
     }
     return fun_dict.get(fun, break_f)
+
 
 
 def main():
