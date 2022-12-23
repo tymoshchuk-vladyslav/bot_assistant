@@ -10,7 +10,8 @@ save_data, search, good_bye, close, exit, .)
 
 PHONE_BOOK = AddressBook()
 
-
+def good_bye():
+    quit()
 
 
 def helps():
