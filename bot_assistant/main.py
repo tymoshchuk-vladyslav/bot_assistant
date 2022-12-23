@@ -8,7 +8,7 @@ save_data, search, good_bye, close, exit, .)
 """
 
 
-def input_error(func):
+def handler(func):
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
