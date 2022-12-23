@@ -30,7 +30,36 @@ class Record:
         self.address = []
 
     def add_address(self, address):
+        """
+        Метод для додавання нового адресу до рекорда.
+        :param address:
+        :return:
+        """
         self.address.append(AddressContact(address))
+
+    def change_address(self, address):
+        """
+        Метод для редагування адресу у контакта.
+        :param address:
+        :return:
+        """
+
+        if len(self.address) == 0:
+            return f"У контакта немає адреси."
+
+        elif len(self.address) == 1:
+            self.address[0] = AddressContact(address)
+            return f"{address}"
+
+        elif len(self.address) > 1:
+            i = -1
+            print(f"Виберіть адресу контакту для редагування.")
+            for adr in self.address:
+                i += 1
+                print(f"№  {i}  :  {adr.value}")
+            inp_user = int(input(f"Введіть №..."))
+            self.address[inp_user] = AddressContact(address)
+            return f"{address}"
 
 
 class AddressBook(UserDict):

@@ -13,6 +13,17 @@ save_data, search, good_bye, close, exit, .)
 PHONE_BOOK = AddressBook()
 
 
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except (IndexError, ValueError, TypeError, KeyError):
+            return "Try again, please"
+
+    return inner
+
+
+@input_error
 def add_address(name):
     """
     Функція для додавання адреси до контакту.
@@ -33,6 +44,29 @@ def good_bye():
     quit()
 
 
+@input_error
+def change_address(name):
+    """
+    Функція для редагування адреси контакту.
+    :param name:
+    :return:
+    """
+    name = name.title()
+
+    if name not in PHONE_BOOK:
+        return f"{name} імя не знайдено в словнику"
+
+    record = PHONE_BOOK[name]
+    user_address = input("Введіть адресу: ")
+    result = record.change_address(user_address)
+
+    if result in "У контакта немає адреси.":
+        return "У контакта немає адреси."
+
+    return f"у контакта {name} замінено адресу на: {result}"
+
+
+@input_error
 def change_input(user_input):
     """
     Функція для обробки введених даних від користувача
@@ -51,16 +85,6 @@ def change_input(user_input):
 
 def handler(commands):
     return USER_COMMANDS.get(commands, break_f)
-    
-
-def input_error(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except (IndexError, ValueError, TypeError, KeyError):
-            return "Try again, please"
-
-    return inner
 
 
 def helps():
@@ -71,7 +95,8 @@ def helps():
            f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
            f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook',
            f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook',
-           f'{Fore.GREEN}add_address{Style.RESET_ALL} - will adding new address to contact in format add_address [Name]']
+           f'{Fore.GREEN}add_address{Style.RESET_ALL} - will adding new address to contact in format: add_address [Name]',
+           f'{Fore.GREEN}change_address{Style.RESET_ALL} - will change address contact in format: change_address [Name]']
 
     return '\n'.join(commands)
 
@@ -85,7 +110,9 @@ def break_f():
 
 USER_COMMANDS = {
     'sort': sort_fun,
-    'add_address': add_address
+    'add': add,
+    'add_address': add_address,
+    'change_address': change_address
 }
 
 
