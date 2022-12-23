@@ -1,4 +1,5 @@
 from collections import UserDict
+import re
 
 
 """
@@ -22,7 +23,10 @@ class Record:
     телефонів класу Phone. Поле Birthday створюється пустим, поле Email створюється порожній список в якому будуть
     екземпляри класу EmailContact, поле
     """
-    pass
+
+    def __init__(self, name):
+        self.name = Name(name)
+        self.phones = []
 
 
 class AddressBook(UserDict):
@@ -30,21 +34,39 @@ class AddressBook(UserDict):
     Клас книги контактів.
     Батьківський клас UserDict.
     """
-    pass
+
+    def add_record(self, record):
+        self.data[record.name.value] = record
 
 
 class Field:
     """
     Батьківський клас для Name, Phone, Birthday, AddressContact, EmailContact.
     """
-    pass
+
+    def __init__(self, value):
+        self.__value = None
+        self.value = value
+
+    @property
+    def value(self):
+        """getter
+        повертає значення self.__value"""
+        return self.__value
+
+    @value.setter
+    def value(self, new_value):
+        """
+        setter
+        змінює значення self.__value
+        """
+        self.__value = new_value
 
 
 class Name(Field):
     """
     Ім'я контакта.
     """
-    pass
 
 
 class Phone(Field):
@@ -52,7 +74,26 @@ class Phone(Field):
     Номер телефону контакта.
     Додається до списку phones, який створюється при ініціалізації класу Record.
     """
-    pass
+
+    def __init__(self, value):
+        super().__init__(value)
+
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, new_value):
+        """
+        setter, щоб
+        номер телефону був такого формату
+        +380000000000
+        """
+        check_match = re.search(r"\+\d{12}", new_value)
+        if not check_match:
+            self.__value = None
+        else:
+            self.__value = new_value
 
 
 class Birthday(Field):

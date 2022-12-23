@@ -11,7 +11,7 @@ save_data, search, good_bye, close, exit, .)
 PHONE_BOOK = AddressBook()
 
 
-def handler(func):
+def input_error(func):
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
