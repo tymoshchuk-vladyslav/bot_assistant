@@ -67,6 +67,7 @@ class Name(Field):
     """
     Ім'я контакта.
     """
+    pass
 
 
 class Phone(Field):
