@@ -12,6 +12,23 @@ save_data, search, good_bye, close, exit, .)
 
 PHONE_BOOK = AddressBook()
 
+
+def add_address(name):
+    """
+    Функція для додавання адреси до контакту.
+    :return:
+    """
+    name = name.title()
+
+    if name not in PHONE_BOOK:
+        return f"{name} імя не знайдено в словнику"
+
+    record = PHONE_BOOK[name]
+    user_address = input("Введіть адресу: ")
+    record.add_address(user_address)
+    return f"Адрес {user_address}. Додано до контакту {name}."
+
+
 def good_bye():
     quit()
 
@@ -53,7 +70,8 @@ def helps():
            f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
            f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
            f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook',
-           f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook']
+           f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook',
+           f'{Fore.GREEN}add_address{Style.RESET_ALL} - will adding new address to contact in format add_address [Name]']
 
     return '\n'.join(commands)
 
@@ -66,7 +84,8 @@ def break_f():
 
 
 USER_COMMANDS = {
-    'sort': sort_fun()
+    'sort': sort_fun,
+    'add_address': add_address
 }
 
 

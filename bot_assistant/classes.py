@@ -27,6 +27,10 @@ class Record:
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
+        self.address = []
+
+    def add_address(self, address):
+        self.address.append(AddressContact(address))
 
 
 class AddressBook(UserDict):
@@ -110,7 +114,17 @@ class AddressContact(Field):
     Адрес контакта.
     Додається до списку address, який створюється при ініціалізації класу Record.
     """
-    pass
+
+    @Field.value.setter
+    def value(self, value: str):
+        """
+        Сетер для адреси.
+        :param value:
+        :return:
+        """
+        if not value.isalnum():
+            raise ValueError('Невірний адрес, введіть адрес в текстовому форматі.')
+        self.__value = value
 
 
 class EmailContact(Field):
