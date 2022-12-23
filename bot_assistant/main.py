@@ -1,4 +1,4 @@
-from classes import AddressBook, Record, Phone
+from classes import AddressBook, Birthday, Phone, Record
 from colorama import Fore, Style
 from sort import sort_fun
 
