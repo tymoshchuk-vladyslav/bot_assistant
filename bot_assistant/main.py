@@ -268,8 +268,43 @@ def sort_notes(args):
     else:
         return NOTES.sort_notes()
     
- 
+@input_error
+def search_notes(args):
+    text = ' '.join(args)
+    return NOTES.search(text)
+
+
+@input_error
+def search_tag(args):
+    search_args = args
     
+    if search_args:
+        result = ''
+        for i in search_args:
+            print(i)
+            result += NOTES.search_by_tag(i)
+        if result:
+            return result
+        else:
+            return 'нотатків не виявлено'
+    else:
+        return 'ви не вибрали жотдного тегу'
+         
+            
+def save(*args): 
+    NOTES.save_notes  
+    ####### тут місце під сейв адресбуку  ########
+    
+    return "saved"
+    
+
+def load(*args):
+    NOTES.load_notes
+    
+    ####### тут місце під лоад адресбуку  ########
+    
+    return "loaded"
+            
 def parser(text):
     if text:
         normalise_text = text.replace(
@@ -279,7 +314,8 @@ def parser(text):
             .replace("search contacts", "search_contacts").replace('add phone', 'add_phone')\
             .replace('add note', 'add_note').replace('del note', 'del_note').replace('delete note', 'del_note')\
             .replace('change note', 'change_note').replace('change tag', 'change_tag')\
-            .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search tag', 'search_tag')
+            .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search note', 'search_notes')\
+            .replace('search tag', 'search_tag').replace('search tags', 'search_tag')
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
     
@@ -301,9 +337,10 @@ def fun_name(fun):
         'change_note': change_note,
         'change_tag': change_tag,
         'sort_notes': sort_notes,
-        
-        # 'search_notes': search_notes,
-        # 'search_tag': search_tag
+        'search_notes': search_notes,
+        'search_tag': search_tag,
+        'save': save,
+        'load': load
         
 
     }

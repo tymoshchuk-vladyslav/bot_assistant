@@ -37,6 +37,7 @@ class Notes(UserList):
         ''' пошук по тексту, приймає текст для пошуку'''
         result = ''
         for idx, record in enumerate(self.data, start=1):
+            # print(idx, record)
 
             if search_text in record.body.value:
                 # print(record)
