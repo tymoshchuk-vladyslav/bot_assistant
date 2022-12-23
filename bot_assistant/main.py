@@ -8,6 +8,9 @@ save_data, search, good_bye, close, exit, .)
 """
 
 
+PHONE_BOOK = AddressBook()
+
+
 def handler(func):
     def inner(*args, **kwargs):
         try:
@@ -16,9 +19,6 @@ def handler(func):
             return "Try again, please"
 
     return inner
-
-
-PHONE_BOOK = AddressBook()
 
 
 def helps():
