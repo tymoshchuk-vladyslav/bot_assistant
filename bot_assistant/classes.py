@@ -152,12 +152,16 @@ class Record:
             self.phones[inp_user] = Phone(new_phone)
             return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
 
-    def change_email(self, email):
+    def change_email(self, new_email):
         """
         Метод для редагування ел. пошти у контакта.
         """
         if len(self.email) == 0:
             return "контакт ще не має ел. пошти."
+        elif len(self.email) == 1:
+            old_email = self.email[0].value
+            self.email[0] = EmailContact(new_email)
+            return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
         else:
             print(f"Виберіть ел. пошту, для редагування.")
             i = 1
@@ -165,8 +169,9 @@ class Record:
                 print(f"№  {i}  :  {e_mail.value}")
                 i += 1
             user_choice = int(input(f"Введіть №..."))
-            self.email[user_choice - 1] = EmailContact(email)
-            return f"{email}"
+            old_email = self.email[user_choice].value
+            self.email[user_choice - 1] = EmailContact(new_email)
+            return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
 
 
     def delete_phone(self):
@@ -195,7 +200,7 @@ class Record:
         Метод для видалення ел. пошти у контакта.
         """
         for eml in self.email:
-            if eml.value == email:
+            if eml.value in email:
                 self.email.remove(eml)
                 return True
         return False

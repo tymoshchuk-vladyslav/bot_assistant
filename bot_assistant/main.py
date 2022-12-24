@@ -262,7 +262,7 @@ def delete_phone(args):
 @input_error
 def delete_email(data):
     """
-    Функція для редагування електронної пошти контакту.
+    Функція для видалення електронної пошти контакту.
     """
     name, email = data.strip().split("")
     record = PHONE_BOOK[name]
@@ -292,9 +292,11 @@ def helps(*args):
                 f'{Fore.GREEN}add email{Style.RESET_ALL} - will adding new address to contact in format: [Name] [email]',
                 f'{Fore.GREEN}add birthday{Style.RESET_ALL} - will adding new address to contact in format: [Name] [birthday]',
                 f'{Fore.GREEN}change address{Style.RESET_ALL} - will change address of you contact. format for change: [Name] [New address]',
+                f'{Fore.GREEN}change email{Style.RESET_ALL} - will change email of you contact. format for change: [Name] [New email]',
                 f'{Fore.GREEN}search contacts{Style.RESET_ALL} - will search all contacts by name or phone number. format: [searching text]',
                 f'{Fore.GREEN}show contact{Style.RESET_ALL} - will show all contacts. Show without name will show all contacts. format: [searching text]',
                 f'{Fore.GREEN}delete birthday{Style.RESET_ALL} - will delete contact Bday. format [name]',
+                f'{Fore.GREEN}delete email{Style.RESET_ALL} - will delete selected contact email. format [Name] [email]',
                 #f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
                 #f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
                 f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook and notes',
@@ -522,7 +524,8 @@ def parser(text):
             .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
             .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
             .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
-            .replace("show contact", "show_contact").replace("show contacts", "show_contact")
+            .replace("show contact", "show_contact").replace("show contacts", "show_contact").replace("add email", "add_email")\
+            .replace("change email", "change_email").replace("delete email", "delete_email")
 
 
         # формуємо кортеж із назви функції і аргументів для неї
@@ -561,9 +564,9 @@ def fun_name(fun):
         "change_phone": change_phone,
         "delete_phone": delete_phone,
         "show_contact": show_contact,
-        'add_email': add_email,
-        'change_email': change_email,
-        'delete_email' : delete_email
+        "add_email": add_email,
+        "change_email": change_email,
+        "delete_email" : delete_email
 
     }
 
