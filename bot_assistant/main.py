@@ -491,7 +491,7 @@ def parser(text):
             .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
             .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
             .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
-            .replace("show contact", "show_contact").replace("show contacts", "show_contact")
+            .replace("show contact", "show_contact").replace("show contacts", "show_contact").replace("search birthday", "search_birthday")
 
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
@@ -528,7 +528,8 @@ def fun_name(fun):
         "load": load,
         "change_phone": change_phone,
         "delete_phone": delete_phone,
-        "show_contact": show_contact
+        "show_contact": show_contact,
+        "search_birthday": search_birthday
     }
 
     return fun_dict.get(fun, break_f)
