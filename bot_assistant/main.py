@@ -433,7 +433,8 @@ def parser(text):
             .replace('change note', 'change_note').replace('change tag', 'change_tag')\
             .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search note', 'search_notes')\
             .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace("change phone", "change_phone")\
-            # формуємо кортеж із назви функції і аргументів для неї
+            .replace("delete phone", "delete_phone")
+        # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
 
 
