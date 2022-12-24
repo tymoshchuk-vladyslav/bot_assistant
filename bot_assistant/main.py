@@ -18,7 +18,7 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except (IndexError, ValueError, TypeError, KeyError):
-            return "Try again, please"
+            return "Виникла помилка, спробуйте ввести ще раз"
 
     return inner
 
@@ -40,21 +40,31 @@ def add_address(name):
     return f"Адрес {user_address}. Додано до контакту {name}."
 
 
+@input_error
 def add(name, phone):
-
+    """Функція для додавання контакту до адресної книги
+    з ім'ям та номером телефону певного формату"""
     if name in PHONE_BOOK:
         return f"{name} вже у словнику"
 
-    record = Record(name)
-
     if not Phone(phone).value:
-        PHONE_BOOK.add_record(record)
-        return f"{name} був доданий до словника, але телефон неправильного формату"
+        while True:
+            message = "Використовуйте такий формат для номера телефону: +380000000000"
+            user_input = input(f"{message}: ")
+            if Phone(user_input).value:
+                record = Record(name)
+                record.add_phone(user_input)
+                PHONE_BOOK.add_record(record)
+                break
+
+        return f"Контакт {name} з номером телефону {user_input} був доданий до словника."
 
     else:
+        record = Record(name)
+        record.add_phone(phone)
         PHONE_BOOK.add_record(record)
-        record.add_phone(name, phone, PHONE_BOOK)
-        return f"{name} з телефоном {phone} було додано до словника "
+
+        return f"Контакт {name} з номером телефону {phone} був доданий до словника."
 
 
 def good_bye():
@@ -106,14 +116,14 @@ def handler(commands):
 
 def helps():
     commands = [f'{Fore.GREEN}add{Style.RESET_ALL} - will adding new contact to you addressbook in format add: [Name][Phone]',
-           f'{Fore.GREEN}change{Style.RESET_ALL} - will change one of you contact. format for change: [Name][Phone][New phone]',
-           f'{Fore.GREEN}delete{Style.RESET_ALL} - will delete contact. format [name]',
-           f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
-           f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
-           f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook',
-           f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook',
-           f'{Fore.GREEN}add_address{Style.RESET_ALL} - will adding new address to contact in format: add_address [Name]',
-           f'{Fore.GREEN}change_address{Style.RESET_ALL} - will change address contact in format: change_address [Name]']
+                f'{Fore.GREEN}change{Style.RESET_ALL} - will change one of you contact. format for change: [Name][Phone][New phone]',
+                f'{Fore.GREEN}delete{Style.RESET_ALL} - will delete contact. format [name]',
+                f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
+                f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
+                f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook',
+                f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook',
+                f'{Fore.GREEN}add_address{Style.RESET_ALL} - will adding new address to contact in format: add_address [Name]',
+                f'{Fore.GREEN}change_address{Style.RESET_ALL} - will change address contact in format: change_address [Name]']
 
     return '\n'.join(commands)
 

@@ -37,9 +37,13 @@ class Record:
         :return:
         """
         self.address.append(AddressContact(address))
-    
-    def add_phone(self, name, phone, address_book):
-        address_book[name].phones.append(Phone(phone))
+
+    def add_phone(self, phone):
+        """
+        Метод додавання
+        номера до контакта
+        """
+        self.phones.append(Phone(phone))
 
     def change_address(self, address):
         """
