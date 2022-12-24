@@ -207,6 +207,23 @@ def search_contacts(args):
     return f"no contacts with such request: {args[0]}"
 
 
+@input_error
+def delete_phone(args):
+    """
+    функція для видалення номеру телефона
+    """
+
+    name = args[0].capitalize()
+
+    if name not in PHONE_BOOK:
+        return f"{name} ім'я не знайдено у словнику"
+
+    record = PHONE_BOOK[name]
+    result = record.delete_phone()
+
+    return result
+
+
 def good_bye(*args):
     """
     Функція для завершення роботи бота.
@@ -448,14 +465,16 @@ def parser(text):
             "good bye", "good_bye").replace("show all", "show_all").replace("upcoming birthday", "upcoming_birthday")\
             .replace("add address", "add_address").replace("add birthday", "add_birthday")\
             .replace("add bd", "add_birthday").replace("add bday", "add_birthday").replace("add email", "add_email")\
-            .replace("search contacts", "search_contacts").replace('add phone', 'add_phone').replace("change phone", "change_phone")\
-            .replace('add note', 'add_note').replace('del note', 'del_note').replace('delete note', 'del_note')\
-            .replace('change note', 'change_note').replace('change tag', 'change_tag')\
-            .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search note', 'search_notes')\
-            .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace('show notes', 'show_notes')\
-            .replace('del birthday', 'del_birthday').replace('delete birthday', 'del_birthday').replace('del bd', 'del_birthday')\
-            .replace('delete bd', 'del_birthday').replace('delete bday', 'del_birthday').replace('del bday', 'del_birthday')\
-            .replace('show contact', 'show_contact').replace('show contacts', 'show_contact')
+            .replace("search contacts", "search_contacts").replace("add phone", "add_phone")\
+            .replace("change phone", "change_phone").replace("change phones", "change_phone")\
+            .replace("delete phone", "delete_phone").replace("del phone", "delete_phone")\
+            .replace("add note", "add_note").replace("del note", "del_note").replace("delete note", "del_note")\
+            .replace("change note", "change_note").replace("change tag", "change_tag")\
+            .replace("sort notes", "sort_notes").replace("search notes", "search_notes").replace("search note", "search_notes")\
+            .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
+            .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
+            .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
+            .replace("show contact", "show_contact").replace("show contacts", "show_contact")
 
 
         # формуємо кортеж із назви функції і аргументів для неї
@@ -492,6 +511,7 @@ def fun_name(fun):
         "save": save,
         "load": load,
         "change_phone": change_phone,
+        "delete_phone": delete_phone,
         "show_contact": show_contact
     }
 
