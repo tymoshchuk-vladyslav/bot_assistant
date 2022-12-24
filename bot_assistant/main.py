@@ -81,9 +81,10 @@ def add_phone(args):
     """
 
     name = args[0].capitalize()
-    phone = args[1:][0]
-    print(name)
-    print(phone)
+    phone = None
+    if args[1:]:
+        phone = args[1:][0]
+   
 
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
@@ -174,6 +175,20 @@ def change_phone(args):
     return result
 
 
+def show_contact(args):
+    '''Функція виводить всі контакти в книзі. Якщо передано імя виведе данні по цьому контакту'''
+    separate = 30*'-'
+    if args:
+        name = args[0].capitalize()
+        return f'{separate} \n{PHONE_BOOK.get(name, "no such name")} \n{separate}'
+    else:
+        result = ''
+        for contact in PHONE_BOOK:
+            result += f'\n{PHONE_BOOK[contact]} \n{separate}'
+        return result
+    
+    
+
 @input_error
 def search_contacts(args):
     """
@@ -230,6 +245,7 @@ def helps(*args):
                 f'{Fore.GREEN}add birthday{Style.RESET_ALL} - will adding new address to contact in format: [Name] [birthday]',
                 f'{Fore.GREEN}change address{Style.RESET_ALL} - will change address of you contact. format for change: [Name] [New address]',
                 f'{Fore.GREEN}search contacts{Style.RESET_ALL} - will search all contacts by name or phone number. format: [searching text]',
+                f'{Fore.GREEN}show contact{Style.RESET_ALL} - will show all contacts. Show without name will show all contacts. format: [searching text]',
                 f'{Fore.GREEN}delete birthday{Style.RESET_ALL} - will delete contact Bday. format [name]',
                 #f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
                 #f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
@@ -449,17 +465,16 @@ def parser(text):
             "good bye", "good_bye").replace("show all", "show_all").replace("upcoming birthday", "upcoming_birthday")\
             .replace("add address", "add_address").replace("add birthday", "add_birthday")\
             .replace("add bd", "add_birthday").replace("add bday", "add_birthday").replace("add email", "add_email")\
-            .replace("search contacts", "search_contacts").replace('add phone', 'add_phone').replace("change phone", "change_phone")\
-            .replace('add note', 'add_note').replace('del note', 'del_note').replace('delete note', 'del_note')\
-            .replace('change note', 'change_note').replace('change tag', 'change_tag')\
-            .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search note', 'search_notes')\
-
-            .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace("change phone", "change_phone")\
-            .replace('delete phone', 'delete_phone')\
-     
-            .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace('show notes', 'show_notes')\
-            .replace('del birthday', 'del_birthday').replace('delete birthday', 'del_birthday').replace('del bd', 'del_birthday')\
-            .replace('delete bd', 'del_birthday').replace('delete bday', 'del_birthday').replace('del bday', 'del_birthday')
+            .replace("search contacts", "search_contacts").replace("add phone", "add_phone")\
+            .replace("change phone", "change_phone").replace("change phones", "change_phone")\
+            .replace("delete phone", "delete_phone").replace("del phone", "delete_phone")\
+            .replace("add note", "add_note").replace("del note", "del_note").replace("delete note", "del_note")\
+            .replace("change note", "change_note").replace("change tag", "change_tag")\
+            .replace("sort notes", "sort_notes").replace("search notes", "search_notes").replace("search note", "search_notes")\
+            .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
+            .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
+            .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
+            .replace("show contact", "show_contact").replace("show contacts", "show_contact")
 
 
         # формуємо кортеж із назви функції і аргументів для неї
@@ -496,7 +511,8 @@ def fun_name(fun):
         "save": save,
         "load": load,
         "change_phone": change_phone,
-        "delete_phone": delete_phone
+        "delete_phone": delete_phone,
+        "show_contact": show_contact
     }
 
     return fun_dict.get(fun, break_f)

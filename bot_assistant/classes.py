@@ -58,6 +58,7 @@ class Record:
         self.phones = []
         self.address = []
         self.birthday = None
+        self.email = None
 
     def add_address(self, address):
         """
@@ -165,6 +166,10 @@ class Record:
             phone_to_delete = self.phones.pop(inp_user)
             return f"{phone_to_delete.value} був видалений для контакту {self.name.value}"
 
+    def __str__(self):
+        return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.email}'
+    # ДОПИСАТИ ЕМАІЛ після реалзіації
+ 
 
 class Field:
     """
