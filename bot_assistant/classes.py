@@ -58,6 +58,7 @@ class Record:
         self.phones = []
         self.address = []
         self.birthday = None
+        self.email = None
 
     def add_address(self, address):
         """
@@ -143,7 +144,11 @@ class Record:
             old_phone = self.phones[inp_user].value
             self.phones[inp_user] = Phone(new_phone)
             return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
-
+        
+    def __str__(self):
+        return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.email}'
+    # ДОПИСАТИ ЕМАІЛ після реалзіації
+ 
 
 class Field:
     """
