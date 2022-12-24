@@ -69,7 +69,7 @@ class Notes(UserList):
 
     def load_notes(self):
         '''десереалізує'''
-        filename = r"C:\Users\asus\save_notes.bin"
+        filename = r"save_notes.bin"
         try:
             with open(filename, "rb") as file:
                 self.data = load(file)
