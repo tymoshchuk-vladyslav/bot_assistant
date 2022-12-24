@@ -84,7 +84,7 @@ def cleaner(path):
                 item.rmdir()
 
 
-def sort_fun():
+def sort_fun(*args):
     '''основна функція яка приймає папку для сортування'''
     user_input = input('Enter dir for a sort: \n')
     path = pathlib.Path(user_input)
