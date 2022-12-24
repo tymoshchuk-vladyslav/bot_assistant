@@ -233,7 +233,7 @@ def helps(*args):
     return '\n'.join(commands)
 
 
-print(helps())
+
 
 
 def break_f(*args):
