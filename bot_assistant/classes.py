@@ -60,7 +60,7 @@ class AddressBook(UserDict):
         for contact in contacts_with_birthday:
             birthday_value = str(contact.birthday.value)
             splitted = birthday_value.split("-")
-            birth_date = date(year=int(splitted[0]), month=int(
+            birth_date = date(year=search_date.year, month=int(
                 splitted[1]), day=int(splitted[2]))
             if birth_date == search_date:
                 contacts_to_return.append(contact.name.value)
