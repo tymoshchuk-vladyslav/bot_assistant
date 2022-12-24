@@ -1,6 +1,6 @@
 from classes import AddressBook, Birthday, Phone, Record
 from colorama import Fore, Style
-from notes import Notes, Note
+from notes import Notes, Note, Tag, Body
 from sort import sort_fun
 
 
@@ -164,6 +164,7 @@ def good_bye(*args):
     """
     Функція для завершення роботи бота.
     """
+    save()
     print("See you latter")
     quit()
 
@@ -191,6 +192,7 @@ def helps(*args):
                 f'{Fore.BLUE}del note{Style.RESET_ALL} - will delete note. format: [record number]',
                 f'{Fore.BLUE}change note{Style.RESET_ALL} - will changing note. format: [record number] [new text]',
                 f'{Fore.BLUE}change tag{Style.RESET_ALL} - will add or delete tag to you note',
+                f'{Fore.BLUE}show notes{Style.RESET_ALL} - will show you all notes',
                 f'{Fore.BLUE}sort notes{Style.RESET_ALL} - will show you note with sort. 1/-1 to asc/desc sorting',
                 f'{Fore.BLUE}search notes{Style.RESET_ALL} - will searching note for you by text',
                 f'{Fore.BLUE}search tag{Style.RESET_ALL} - will searching note for you by tag',
@@ -332,6 +334,10 @@ def sort_notes(args):
         return NOTES.sort_notes()
 
 
+def show_notes(args):
+    return NOTES.get_notes()
+
+
 @input_error
 def search_notes(args):
     """
@@ -361,22 +367,23 @@ def search_tag(args):
     else:
         return "ви не вибрали жотдного тегу"
 
-
+@input_error
 def save(*args):
     """
     Функція збереження нотаток.
     """
-    NOTES.save_notes
+    NOTES.save_notes()
     ####### тут місце під сейв адресбуку  ########
 
     return "saved"
 
 
+@input_error
 def load(*args):
     """
     Функція завантаження нотаток.
     """
-    NOTES.load_notes
+    NOTES.load_notes()
 
     ####### тут місце під лоад адресбуку  ########
 
@@ -397,7 +404,7 @@ def parser(text):
             .replace('add note', 'add_note').replace('del note', 'del_note').replace('delete note', 'del_note')\
             .replace('change note', 'change_note').replace('change tag', 'change_tag')\
             .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search note', 'search_notes')\
-            .replace('search tag', 'search_tag').replace('search tags', 'search_tag')
+            .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace('show notes', 'show_notes')
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
 
@@ -425,6 +432,7 @@ def fun_name(fun):
         "change_note": change_note,
         "change_tag": change_tag,
         "sort_notes": sort_notes,
+        "show_notes": show_notes,
         "search_notes": search_notes,
         "search_tag": search_tag,
         "save": save,
