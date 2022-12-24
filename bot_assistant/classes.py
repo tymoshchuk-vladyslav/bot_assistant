@@ -129,8 +129,8 @@ class Record:
             return f"{new_phone} був доданий до словника для контакту {self.name.value}"
 
         if len(self.phones) == 1:
-            old_phone = self.phones[0]
-            self.phones[0].value = new_phone
+            old_phone = self.phones[0].value
+            self.phones[0] = Phone(new_phone)
             return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
 
         if len(self.phones) > 1:
@@ -140,7 +140,7 @@ class Record:
                 i += 1
                 print(f"№ {i} : {phone.value}")
             inp_user = int(input(f"Введіть №..."))
-            old_phone = self.phones[inp_user]
+            old_phone = self.phones[inp_user].value
             self.phones[inp_user] = Phone(new_phone)
             return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
 
