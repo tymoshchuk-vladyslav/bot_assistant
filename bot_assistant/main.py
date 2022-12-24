@@ -100,7 +100,7 @@ def add_phone(args):
 @input_error
 def add_birthday(args):
     """
-    Функція для додавання телефону до контакту.
+    Функція для додавання дня народження до контакту.
     :return:
     """
 
@@ -140,6 +140,24 @@ def change_address(name):
         return "У контакту немає адреси."
 
     return f"у контакту {name} замінено адресу на: {result}"
+
+
+@input_error
+def change_phone(args):
+    """
+    Функція для заміни телефону
+    """
+
+    name = args[0].capitalize()
+    new_phone = args[1:][0]
+
+    if name not in PHONE_BOOK:
+        return f"{name} ім'я не знайдено в словнику."
+
+    record = PHONE_BOOK[name]
+    result = record.change_phone(new_phone)
+
+    return result
 
 
 @input_error
@@ -405,6 +423,8 @@ def parser(text):
             .replace('change note', 'change_note').replace('change tag', 'change_tag')\
             .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search note', 'search_notes')\
             .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace('show notes', 'show_notes')
+            .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace("change phone", "change_phone")
+
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
 
@@ -436,7 +456,8 @@ def fun_name(fun):
         "search_notes": search_notes,
         "search_tag": search_tag,
         "save": save,
-        "load": load
+        "load": load,
+        "change_phone": change_phone
     }
 
     return fun_dict.get(fun, break_f)
