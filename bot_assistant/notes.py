@@ -63,7 +63,7 @@ class Notes(UserList):
 
     def save_notes(self):
         '''серіалізує'''
-        filename = r"C:\Users\asus\save_notes.bin"
+        filename = r"save_notes.bin"
         with open(filename, "wb") as file:
             dump(self.data, file)
 
