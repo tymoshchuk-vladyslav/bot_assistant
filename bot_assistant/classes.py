@@ -144,6 +144,27 @@ class Record:
             self.phones[inp_user] = Phone(new_phone)
             return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
 
+    def delete_phone(self):
+        """
+        метод для видалення номеру телефона
+        """
+        if len(self.phones) == 0:
+            return f"{self.name.value} не має няіких номерів"
+
+        if len(self.phones) == 1:
+            phone_to_delete = self.phones.pop(0)
+            return f"{phone_to_delete.value} був видалений для контакту {self.name.value}"
+
+        else:
+            i = -1
+            print("Виберіть який телефон хочете видалити")
+            for phone in self.phones:
+                i += 1
+                print(f"№ {i} : {phone.value}")
+            inp_user = int(input(f"Введіть №..."))
+            phone_to_delete = self.phones.pop(inp_user)
+            return f"{phone_to_delete.value} був видалений для контакту {self.name.value}"
+
 
 class Field:
     """

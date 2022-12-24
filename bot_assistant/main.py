@@ -178,6 +178,23 @@ def search_contacts(args):
     return f"no contacts with such request: {args[0]}"
 
 
+@input_error
+def delete_phone(args):
+    """
+    функція для видалення номеру телефона
+    """
+
+    name = args[0].capitalize()
+
+    if name not in PHONE_BOOK:
+        return f"{name} ім'я не знайдено у словнику"
+
+    record = PHONE_BOOK[name]
+    result = record.delete_phone()
+
+    return result
+
+
 def good_bye(*args):
     """
     Функція для завершення роботи бота.
@@ -415,7 +432,8 @@ def parser(text):
             .replace('add note', 'add_note').replace('del note', 'del_note').replace('delete note', 'del_note')\
             .replace('change note', 'change_note').replace('change tag', 'change_tag')\
             .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search note', 'search_notes')\
-            .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace("change phone", "change_phone")
+            .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace("change phone", "change_phone")\
+            .replace("delete phone", "delete_phone")
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
 
@@ -447,7 +465,8 @@ def fun_name(fun):
         "search_tag": search_tag,
         "save": save,
         "load": load,
-        "change_phone": change_phone
+        "change_phone": change_phone,
+        "delete_phone": delete_phone
     }
 
     return fun_dict.get(fun, break_f)
