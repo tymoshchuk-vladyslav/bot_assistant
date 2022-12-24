@@ -88,7 +88,7 @@ class Record:
         """
         all_phones = [phone.value for phone in self.phones]
         return all_phones
-    
+
     def get_addresses(self):
         """
         Метод для повернення списку всіх адрес.
@@ -119,6 +119,30 @@ class Record:
             inp_user = int(input(f"Введіть №..."))
             self.address[inp_user] = AddressContact(address)
             return f"{address}"
+
+    def change_phone(self, new_phone):
+        """
+        метод заміни номеру телефона
+        """
+        if len(self.phones) == 0:
+            self.phones.append(Phone(new_phone))
+            return f"{new_phone} був доданий до словника для контакту {self.name.value}"
+
+        if len(self.phones) == 1:
+            old_phone = self.phones[0].value
+            self.phones[0] = Phone(new_phone)
+            return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
+
+        if len(self.phones) > 1:
+            i = -1
+            print("Виберіть телефон для заміни на новий.")
+            for phone in self.phones:
+                i += 1
+                print(f"№ {i} : {phone.value}")
+            inp_user = int(input(f"Введіть №..."))
+            old_phone = self.phones[inp_user].value
+            self.phones[inp_user] = Phone(new_phone)
+            return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
 
 
 class Field:
@@ -184,7 +208,7 @@ class Birthday(Field):
     День народження контакта.
     Додається до списку birthday, який створюється при ініціалізації класу Record.
     """
-   
+
     @property
     def value(self):
         return self.__value
@@ -208,7 +232,7 @@ class AddressContact(Field):
     Додається до списку address, який створюється при ініціалізації класу Record.
     """
     pass
-   
+
 
 class EmailContact(Field):
     """
