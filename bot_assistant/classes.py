@@ -58,7 +58,7 @@ class Record:
         self.phones = []
         self.address = []
         self.birthday = None
-        self.email = None
+        self.email = []
 
     def add_address(self, address):
         """
@@ -82,6 +82,13 @@ class Record:
         Додається до списку як екземпляр класу Phone.
         """
         self.phones.append(Phone(phone))
+
+    def add_email(self, email):
+        """
+        Метод для додавання нової ел. пошти до контакта.
+        """
+        self.email.append(EmailContact(email))
+
 
     def get_phones(self):
         """
@@ -145,6 +152,23 @@ class Record:
             self.phones[inp_user] = Phone(new_phone)
             return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
 
+    def change_email(self, email):
+        """
+        Метод для редагування ел. пошти у контакта.
+        """
+        if len(self.email) == 0:
+            return "контакт ще не має ел. пошти."
+        else:
+            print(f"Виберіть ел. пошту, для редагування.")
+            i = 1
+            for e_mail in self.email:
+                print(f"№  {i}  :  {e_mail.value}")
+                i += 1
+            user_choice = int(input(f"Введіть №..."))
+            self.email[user_choice - 1] = EmailContact(email)
+            return f"{email}"
+
+
     def delete_phone(self):
         """
         метод для видалення номеру телефона
@@ -165,6 +189,17 @@ class Record:
             inp_user = int(input(f"Введіть №..."))
             phone_to_delete = self.phones.pop(inp_user)
             return f"{phone_to_delete.value} був видалений для контакту {self.name.value}"
+
+    def delete_email(self, email):
+        """
+        Метод для видалення ел. пошти у контакта.
+        """
+        for eml in self.email:
+            if eml.value == email:
+                self.email.remove(eml)
+                return True
+        return False
+
 
     def __str__(self):
         return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.email}'
@@ -265,4 +300,15 @@ class EmailContact(Field):
     Email контакту.
     Додається до списку email_contact, який створюється при ініціалізації класу Record.
     """
-    pass
+    @Field.value.setter
+    def value(self, value: str):
+        """
+        EmailContact setter.
+        """
+        if not re.findall(r"\b[a-zA-z][\w_.]+@[a-zA-z]+\.[a-zA-z]{2,}[.]]", value):
+            raise ValueError(
+                '''Невірний формат ел. пошти. 
+                 Приклад вводу - "****@ukr.net"
+                 ''')
+        self.__value = value
+

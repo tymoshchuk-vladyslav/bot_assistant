@@ -122,6 +122,24 @@ def add_birthday(args):
         return f" {user_birthday} was added to {name}"
 
 
+@input_error
+def add_email(name):
+    """
+    Функція для додавання електронної адреси до контакту.
+    :return:
+    """
+    name = name.title()
+
+    if name not in PHONE_BOOK:
+        return f"Ім'я {name} не знайдене в адресній книзі"
+
+    record = PHONE_BOOK[name]
+    user_email = input(f"Введіть email {name}: ")
+    record.add_email(user_email)
+    return f"У {name} додано нову ел. пошту - {user_email}."
+
+
+
 def del_birthday(args):
     '''видаляэ день народження у контакта. приймає імя контакту'''
     name = args[0].capitalize()
@@ -175,6 +193,23 @@ def change_phone(args):
     return result
 
 
+@input_error
+def change_email(name):
+    """
+    Функція для редагування електронної пошти контакту.
+    """
+    name = name.title()
+
+    if name not in PHONE_BOOK:
+        return f"Ім'я {name} не знайдене в адресній книзі"
+    
+    record = PHONE_BOOK[name]
+    user_email = input(f"Введіть нову ел. пошту {name}: ")
+    record.change_email(user_email)
+    return "Ел. пошта змінена"
+
+
+
 def show_contact(args):
     '''Функція виводить всі контакти в книзі. Якщо передано імя виведе данні по цьому контакту'''
     separate = 30*'-'
@@ -222,6 +257,19 @@ def delete_phone(args):
     result = record.delete_phone()
 
     return result
+
+
+@input_error
+def delete_email(data):
+    """
+    Функція для редагування електронної пошти контакту.
+    """
+    name, email = data.strip().split("")
+    record = PHONE_BOOK[name]
+    if record.delete_email(email):
+        return f"Ел. пошта {email} у {name} видалена."
+    return f"{name} не має даної ел. пошти"
+
 
 
 def good_bye(*args):
@@ -512,7 +560,11 @@ def fun_name(fun):
         "load": load,
         "change_phone": change_phone,
         "delete_phone": delete_phone,
-        "show_contact": show_contact
+        "show_contact": show_contact,
+        'add_email': add_email,
+        'change_email': change_email,
+        'delete_email' : delete_email
+
     }
 
     return fun_dict.get(fun, break_f)
