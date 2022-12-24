@@ -205,6 +205,7 @@ def search_contacts(args):
     return f"no contacts with such request: {args[0]}"
 
 
+@input_error
 def search_birthday(args):
     """
     Функція повертає всі контакти, в яких
@@ -214,15 +215,20 @@ def search_birthday(args):
 
     data = PHONE_BOOK.search_contacts_birthday(days)
 
-    search_date = data['search_date']
-    contacts = data['contacts']
+    if not data:
+        return f"У жодного з ваших контактів немає дня народження впродовж {days} днів."
 
-    if not contacts:
-        return f"У жодного з ваших контактів немає дня народження через {days} днів {search_date} числа."
+    to_return = []
 
-    contacts_string = ", ".join(contacts)
+    for contact in data:
+        if data[contact] == 1:
+            to_return.append(
+                f"{contact} має день народження через {data[contact]} день")
+        else:
+            to_return.append(
+                f"{contact} має день народження через {data[contact]} днів")
 
-    return f"{contacts_string} мають день народження через {days} днів {search_date} числа."
+    return "\n".join(to_return)
 
 
 @input_error

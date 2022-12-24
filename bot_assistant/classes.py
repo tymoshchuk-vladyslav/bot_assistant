@@ -54,18 +54,23 @@ class AddressBook(UserDict):
             if self.data[contact].birthday.value:
                 contacts_with_birthday.append(self.data[contact])
 
-        search_date = date.today() + timedelta(days=days)
-        contacts_to_return = []
+        today = date.today()
+        contacts_to_return = {}
 
         for contact in contacts_with_birthday:
             birthday_value = str(contact.birthday.value)
             splitted = birthday_value.split("-")
-            birth_date = date(year=search_date.year, month=int(
-                splitted[1]), day=int(splitted[2]))
-            if birth_date == search_date:
-                contacts_to_return.append(contact.name.value)
+            counter = 1
+            while counter != days:
+                reference_date = today + timedelta(days=counter)
+                if date(year=reference_date.year, month=int(splitted[1]), day=int(splitted[2])) == reference_date:
+                    contacts_to_return[contact.name.value] = counter
+                    break
+                else:
+                    counter += 1
+                    continue
 
-        return {'contacts': contacts_to_return, 'search_date': search_date.strftime("%d.%m.%Y")}
+        return contacts_to_return
 
 
 class Record:
