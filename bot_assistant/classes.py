@@ -23,9 +23,15 @@ class AddressBook(UserDict):
     """
 
     def add_record(self, record):
+        """
+        Додавання нового запису до книги.
+        """
         self.data[record.name.value] = record
 
     def search_contacts(self, search_value):
+        """
+        Метод для пошуку контактів серед книги.
+        """
         contacts = []
         for key, val in self.data.items():
             if search_value in key.lower():
@@ -55,37 +61,50 @@ class Record:
 
     def add_address(self, address):
         """
-        Метод для додавання нового адресу до рекорда.
+        Метод для додавання нового адресу до рекорду.
+        Додається до списку як екземпляр класу AddressContact.
         :param address:
         :return:
         """
         self.address.append(AddressContact(address))
 
-        
     def add_birthday(self, birthday):
+        """
+        Метод для додавання дн до рекорду.
+        Додається як екземпляр класу Birthday.
+        """
         self.birthday = Birthday(birthday)
 
     def add_phone(self, phone):
+        """
+        Метод для додавання номера телефону до рекорду.
+        Додається до списку як екземпляр класу Phone.
+        """
         self.phones.append(Phone(phone))
 
     def get_phones(self):
+        """
+        Метод для певернення списку всіх номерів телефонів.
+        """
         all_phones = [phone.value for phone in self.phones]
         return all_phones
     
     def get_addresses(self):
+        """
+        Метод для повернення списку всіх адрес.
+        """
         all_address = [address.value for address in self.address]
         return all_address
 
-
     def change_address(self, address):
         """
-        Метод для редагування адресу у контакта.
+        Метод для редагування адрес у контакту.
         :param address:
         :return:
         """
 
         if len(self.address) == 0:
-            return f"У контакта немає адреси."
+            return f"У контакту немає адреси."
 
         elif len(self.address) == 1:
             self.address[0] = AddressContact(address)
@@ -100,8 +119,6 @@ class Record:
             inp_user = int(input(f"Введіть №..."))
             self.address[inp_user] = AddressContact(address)
             return f"{address}"
-
-
 
 
 class Field:
@@ -187,16 +204,15 @@ class Birthday(Field):
 
 class AddressContact(Field):
     """
-    Адрес контакта.
+    Адрес контакту.
     Додається до списку address, який створюється при ініціалізації класу Record.
     """
     pass
    
 
-
 class EmailContact(Field):
     """
-    Email контакта.
+    Email контакту.
     Додається до списку email_contact, який створюється при ініціалізації класу Record.
     """
     pass
