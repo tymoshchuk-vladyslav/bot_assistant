@@ -27,27 +27,28 @@ class Notes(UserList):
         '''шукає нотатки за тегом та виводить їх відсортовано по зростанню, приймає тег'''
         result = ''
         sorted_list = sorted(self.data, key=lambda record: record.tag.value)
-        for idx, record in enumerate(sorted_list):
+        for idx, record in enumerate(sorted_list, start=1):
 
             if tag.lower() in record.tag.value:
-                result += f'---note №{idx+1}---\n{str(record)}\n'
+                result += f'---note №{idx}---\n{str(record)}\n'
         return result
 
     def search(self, search_text):
         ''' пошук по тексту, приймає текст для пошуку'''
         result = ''
-        for idx, record in enumerate(self.data):
+        for idx, record in enumerate(self.data, start=1):
+            # print(idx, record)
 
             if search_text in record.body.value:
                 # print(record)
-                result += f'---note №{idx+1}---\n{str(record)}\n'
+                result += f'---note №{idx}---\n{str(record)}\n'
         return result
 
     def get_notes(self):
         '''технічна функція для вивдення всіх нотатків'''
         result = ''
-        for idx, record in enumerate(self.data):
-            result += f'---note №{idx+1}---\n{str(record)}\n'
+        for idx, record in enumerate(self.data, start=1):
+            result += f'---note №{idx}---\n{str(record)}\n'
         return result
 
     def sort_notes(self, way=1):
@@ -76,7 +77,7 @@ class Notes(UserList):
             return
 
 
-class Record:
+class Note:
     '''1 екземпляр класу = 1 нотатка, в середені має текст і тегі'''
 
     def __init__(self, tag, body):
@@ -107,17 +108,17 @@ class Record:
     #     return f'{self.tag.value[:3]}...\n {self.body.value[:50]}...\n' + 50*'-' +'\n'
 
 
-class Note:
+class Field:
     def __init__(self, value):
         self.value = value
 
 
-class Tag(Note):
+class Tag(Field):
     def __init__(self, value):
         splited = sorted(re.split('\W', value))
         self.value = [i.lower() for i in splited if bool(i) == True]
 
 
-class Body(Note):
+class Body(Field):
     pass
 
