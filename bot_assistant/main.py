@@ -38,18 +38,18 @@ def add(args):
     """
     Функція для додавання нового контакту до книги.
     """
-  
+
     name = args[0].capitalize()
     phone = args[1:][0]
-    
+
     if name in PHONE_BOOK:
         return f"{name} вже у словнику"
     else:
         PHONE_BOOK.add_record(Record(name))
         PHONE_BOOK[name].add_phone(phone)
-    
+
     return f"{name} was added with {phone}"
-    
+
 
 @input_error
 def add_address(args):
@@ -71,7 +71,7 @@ def add_address(args):
         user_address = input("Введіть адресу: ")
         PHONE_BOOK[name].add_address(user_address)
         return f" {user_address} was added to {name}"
-    
+
 
 @input_error
 def add_phone(args):
@@ -166,7 +166,7 @@ def good_bye(*args):
     """
     print("See you latter")
     quit()
-    
+
 
 def helps(*args):
     """
@@ -174,16 +174,34 @@ def helps(*args):
     """
 
     commands = [f'{Fore.GREEN}add{Style.RESET_ALL} - will adding new contact to you addressbook in format add: [Name][Phone]',
-           f'{Fore.GREEN}change{Style.RESET_ALL} - will change one of you contact. format for change: [Name][Phone][New phone]',
-           f'{Fore.GREEN}delete{Style.RESET_ALL} - will delete contact. format [name]',
-           f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
-           f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
-           f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook',
-           f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook',
-           f'{Fore.GREEN}add_address{Style.RESET_ALL} - will adding new address to contact in format: add_address [Name]',
-           f'{Fore.GREEN}change_address{Style.RESET_ALL} - will change address contact in format: change_address [Name]']
+                f'{Fore.GREEN}add phone{Style.RESET_ALL} - will adding phone to contact in format add: [Name] [Phone]',
+                f'{Fore.GREEN}add address{Style.RESET_ALL} - will adding new address to contact in format: [Name] [address]',
+                f'{Fore.GREEN}add email{Style.RESET_ALL} - will adding new address to contact in format: [Name] [email]',
+                f'{Fore.GREEN}add birthday{Style.RESET_ALL} - will adding new address to contact in format: [Name] [birthday]',
+                f'{Fore.GREEN}change address{Style.RESET_ALL} - will change address of you contact. format for change: [Name] [New address]',
+                f'{Fore.GREEN}search contacts{Style.RESET_ALL} - will search all contacts by name or phone number. format: [searching text]',
+                #f'{Fore.GREEN}delete{Style.RESET_ALL} - will delete contact. format [name]',
+                #f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
+                #f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
+                f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook and notes',
+                f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook and notes',
+                f'{Fore.GREEN}sort{Style.RESET_ALL} - will make magik and sort you files. Give only dir ;)',
+
+                f'{Fore.BLUE}add note{Style.RESET_ALL} - will adding new note',
+                f'{Fore.BLUE}del note{Style.RESET_ALL} - will delete note. format: [record number]',
+                f'{Fore.BLUE}change note{Style.RESET_ALL} - will changing note. format: [record number] [new text]',
+                f'{Fore.BLUE}change tag{Style.RESET_ALL} - will add or delete tag to you note',
+                f'{Fore.BLUE}sort notes{Style.RESET_ALL} - will show you note with sort. 1/-1 to asc/desc sorting',
+                f'{Fore.BLUE}search notes{Style.RESET_ALL} - will searching note for you by text',
+                f'{Fore.BLUE}search tag{Style.RESET_ALL} - will searching note for you by tag',
+
+                f'{Fore.RED}good_bye{Style.RESET_ALL} - for exit',
+                ]
 
     return '\n'.join(commands)
+
+
+print(helps())
 
 
 def break_f(*args):
@@ -210,7 +228,7 @@ def add_note(*args):
             return
         else:
             break
-    
+
     while True:
         tag = input("додайте теги:\n")
         if not tag:
@@ -223,7 +241,7 @@ def add_note(*args):
     NOTES.add_record(Note(tag, body))
 
     return "Нотатку створено"
- 
+
 
 @input_error
 def del_note(args):
@@ -240,9 +258,9 @@ def del_note(args):
             print(f"немає нотатки з таким номером {int(i)}")
         else:
             del_numbers.append(int(i)-1)
-    
+
     return f"нотатки {del_numbers} були видалені"
-           
+
 
 @input_error
 def change_note(args):
@@ -255,7 +273,7 @@ def change_note(args):
 
     if not new_text:
         new_text = input("Введіть новий текст:\n")
-        
+
     NOTES.cahange_note_text(number-1, new_text)  # нотатки виводятся з 1
 
     return f"Нотатка №{number} була змінена"
@@ -298,7 +316,7 @@ def change_tag(args):
         NOTES[int(number) - 1].add_tag(tag)
     else:
         NOTES[int(number) - 1].del_tag(tag)
-    
+
 
 @input_error
 def sort_notes(args):
@@ -330,7 +348,7 @@ def search_tag(args):
     """
 
     search_args = args
-    
+
     if search_args:
         result = ""
         for i in search_args:
@@ -342,26 +360,26 @@ def search_tag(args):
             return "нотаток не виявлено"
     else:
         return "ви не вибрали жотдного тегу"
-         
-            
+
+
 def save(*args):
     """
     Функція збереження нотаток.
     """
-    NOTES.save_notes  
+    NOTES.save_notes
     ####### тут місце під сейв адресбуку  ########
-    
+
     return "saved"
-    
+
 
 def load(*args):
     """
     Функція завантаження нотаток.
     """
     NOTES.load_notes
-    
+
     ####### тут місце під лоад адресбуку  ########
-    
+
     return "loaded"
 
 
