@@ -84,7 +84,6 @@ def add_phone(args):
     phone = None
     if args[1:]:
         phone = args[1:][0]
-   
 
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
@@ -125,16 +124,16 @@ def add_birthday(args):
 def del_birthday(args):
     '''видаляэ день народження у контакта. приймає імя контакту'''
     name = args[0].capitalize()
-    
+
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
-    
+
     if PHONE_BOOK[name].birthday:
         PHONE_BOOK[name].birthday = None
         return f'{name} was deleted'
     else:
         return 'no info aobout birthday'
-    
+
 
 def change_address(name):
     """
@@ -186,8 +185,7 @@ def show_contact(args):
         for contact in PHONE_BOOK:
             result += f'\n{PHONE_BOOK[contact]} \n{separate}'
         return result
-    
-    
+
 
 @input_error
 def search_contacts(args):
@@ -205,6 +203,27 @@ def search_contacts(args):
             result += f"{name} with:\n {', '.join(all_phones)} \n BD: {bd} \n address: {address}"
         return result
     return f"no contacts with such request: {args[0]}"
+
+
+@input_error
+def search_birthday(args):
+    """
+    Функція повертає всі контакти, в яких
+    ДН через days днів
+    """
+    days = int(args[0])
+
+    data = PHONE_BOOK.search_contacts_birthday(days)
+
+    search_date = data['search_date']
+    contacts = data['contacts']
+
+    if not contacts:
+        return f"У жодного з ваших контактів немає дня народження через {days} днів {search_date} числа."
+
+    contacts_string = ", ".join(contacts)
+
+    return f"{contacts_string} мають день народження через {days} днів {search_date} числа."
 
 
 @input_error
@@ -266,9 +285,6 @@ def helps(*args):
                 ]
 
     return '\n'.join(commands)
-
-
-
 
 
 def break_f(*args):
@@ -432,6 +448,7 @@ def search_tag(args):
     else:
         return "ви не вибрали жотдного тегу"
 
+
 @input_error
 def save(*args):
     """
@@ -475,7 +492,6 @@ def parser(text):
             .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
             .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
             .replace("show contact", "show_contact").replace("show contacts", "show_contact")
-
 
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
