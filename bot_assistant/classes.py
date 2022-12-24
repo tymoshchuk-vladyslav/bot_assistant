@@ -58,10 +58,10 @@ class AddressBook(UserDict):
         contacts_to_return = []
 
         for contact in contacts_with_birthday:
-            birthday_value = contact.birthday.value
-            splitted = birthday_value.split(".")
-            birth_date = date(year=int(splitted[2]), month=int(
-                splitted[1]), days=int(splitted[0]))
+            birthday_value = str(contact.birthday.value)
+            splitted = birthday_value.split("-")
+            birth_date = date(year=int(splitted[0]), month=int(
+                splitted[1]), day=int(splitted[2]))
             if birth_date == search_date:
                 contacts_to_return.append(contact.name.value)
 

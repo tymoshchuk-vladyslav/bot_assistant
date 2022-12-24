@@ -205,7 +205,6 @@ def search_contacts(args):
     return f"no contacts with such request: {args[0]}"
 
 
-@input_error
 def search_birthday(args):
     """
     Функція повертає всі контакти, в яких
@@ -267,7 +266,7 @@ def helps(*args):
                 f'{Fore.GREEN}show contact{Style.RESET_ALL} - will show all contacts. Show without name will show all contacts. format: [searching text]',
                 f'{Fore.GREEN}delete birthday{Style.RESET_ALL} - will delete contact Bday. format [name]',
                 #f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
-                #f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
+                f'{Fore.GREEN}search_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
                 f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook and notes',
                 f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook and notes',
                 f'{Fore.GREEN}sort{Style.RESET_ALL} - will make magik and sort you files. Give only dir ;)',
@@ -491,7 +490,8 @@ def parser(text):
             .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
             .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
             .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
-            .replace("show contact", "show_contact").replace("show contacts", "show_contact").replace("search birthday", "search_birthday")
+            .replace("search birthday", "search_birthday").replace("search bd", "search_birthday")\
+            .replace("show contact", "show_contact").replace("show contacts", "show_contact")\
 
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
