@@ -121,6 +121,20 @@ def add_birthday(args):
         return f" {user_birthday} was added to {name}"
 
 
+def del_birthday(args):
+    '''видаляэ день народження у контакта. приймає імя контакту'''
+    name = args[0].capitalize()
+    
+    if name not in PHONE_BOOK:
+        return f"{name} імя не знайдено в словнику"
+    
+    if PHONE_BOOK[name].birthday:
+        PHONE_BOOK[name].birthday = None
+        return f'{name} was deleted'
+    else:
+        return 'no info aobout birthday'
+    
+
 def change_address(name):
     """
     Функція для редагування адреси контакту.
@@ -199,7 +213,7 @@ def helps(*args):
                 f'{Fore.GREEN}add birthday{Style.RESET_ALL} - will adding new address to contact in format: [Name] [birthday]',
                 f'{Fore.GREEN}change address{Style.RESET_ALL} - will change address of you contact. format for change: [Name] [New address]',
                 f'{Fore.GREEN}search contacts{Style.RESET_ALL} - will search all contacts by name or phone number. format: [searching text]',
-                #f'{Fore.GREEN}delete{Style.RESET_ALL} - will delete contact. format [name]',
+                f'{Fore.GREEN}delete birthday{Style.RESET_ALL} - will delete contact Bday. format [name]',
                 #f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
                 #f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
                 f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook and notes',
@@ -221,7 +235,7 @@ def helps(*args):
     return '\n'.join(commands)
 
 
-print(helps())
+
 
 
 def break_f(*args):
@@ -418,12 +432,14 @@ def parser(text):
             "good bye", "good_bye").replace("show all", "show_all").replace("upcoming birthday", "upcoming_birthday")\
             .replace("add address", "add_address").replace("add birthday", "add_birthday")\
             .replace("add bd", "add_birthday").replace("add bday", "add_birthday").replace("add email", "add_email")\
-            .replace("search contacts", "search_contacts").replace('add phone', 'add_phone')\
+            .replace("search contacts", "search_contacts").replace('add phone', 'add_phone').replace("change phone", "change_phone")\
             .replace('add note', 'add_note').replace('del note', 'del_note').replace('delete note', 'del_note')\
             .replace('change note', 'change_note').replace('change tag', 'change_tag')\
             .replace('sort notes', 'sort_notes').replace('search notes', 'search_notes').replace('search note', 'search_notes')\
             .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace('show notes', 'show_notes')\
-            .replace('search tag', 'search_tag').replace('search tags', 'search_tag').replace("change phone", "change_phone")
+            .replace('del birthday', 'del_birthday').replace('delete birthday', 'del_birthday').replace('del bd', 'del_birthday')\
+            .replace('delete bd', 'del_birthday').replace('delete bday', 'del_birthday').replace('del bday', 'del_birthday')
+
 
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
@@ -444,6 +460,7 @@ def fun_name(fun):
         "add_phone": add_phone,
         "add_address": add_address,
         "add_birthday": add_birthday,
+        "del_birthday": del_birthday,
         "change_address": change_address,
         "search_contacts": search_contacts,
         "sort": sort_fun,
@@ -472,7 +489,7 @@ def main():
         user_input = input(
             "Введіть будь ласка команду: (або використай команду help)\n").lower()
         fun, args = parser(user_input)
-        print(fun, args)
+        # print(fun, args)
         text = fun_name(fun)(args)
         print(text)
 
