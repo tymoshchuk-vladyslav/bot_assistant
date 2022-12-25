@@ -13,9 +13,7 @@
 здійснювати пошук та сортування нотаток за ключовими словами (тегами);
 сортувати файли у зазначеній папці за категоріями (зображення, документи, відео та ін.).
 
-
 This repository contains:
-
 
 ## Table of Contents
 
@@ -27,7 +25,9 @@ This repository contains:
 
 This project uses [Python 3.10](https://www.python.org/). Go check them out if you don't have them locally installed.
 
+Download all files.
 Requires pip to install.
+
 ```sh
 $ pip install [folder path pyproject.toml]
 ```
