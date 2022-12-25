@@ -57,18 +57,32 @@ class AddressBook(UserDict):
         today = date.today()
         contacts_to_return = {}
 
-        for contact in contacts_with_birthday:
-            birthday_value = str(contact.birthday.value)
-            splitted = birthday_value.split("-")
-            counter = 0
-            while counter != days + 1:
-                reference_date = today + timedelta(days=counter)
-                if date(year=reference_date.year, month=int(splitted[1]), day=int(splitted[2])) == reference_date:
-                    contacts_to_return[contact.name.value] = counter
-                    break
-                else:
-                    counter += 1
-                    continue
+        if days >= 0:
+            for contact in contacts_with_birthday:
+                birthday_value = str(contact.birthday.value)
+                splitted = birthday_value.split("-")
+                counter = 0
+                while counter != days + 1:
+                    reference_date = today + timedelta(days=counter)
+                    if date(year=reference_date.year, month=int(splitted[1]), day=int(splitted[2])) == reference_date:
+                        contacts_to_return[contact.name.value] = counter
+                        break
+                    else:
+                        counter += 1
+                        continue
+        elif days < 0:
+            for contact in contacts_with_birthday:
+                birthday_value = str(contact.birthday.value)
+                splitted = birthday_value.split("-")
+                counter = -1
+                while counter != days - 1:
+                    reference_date = today + timedelta(days=counter)
+                    if date(year=reference_date.year, month=int(splitted[1]), day=int(splitted[2])) == reference_date:
+                        contacts_to_return[contact.name.value] = counter
+                        break
+                    else:
+                        counter -= 1
+                        continue
 
         return contacts_to_return
 
