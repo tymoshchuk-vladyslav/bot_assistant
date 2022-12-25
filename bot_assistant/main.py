@@ -84,7 +84,6 @@ def add_phone(args):
     phone = None
     if args[1:]:
         phone = args[1:][0]
-   
 
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
@@ -125,16 +124,16 @@ def add_birthday(args):
 def del_birthday(args):
     '''видаляэ день народження у контакта. приймає імя контакту'''
     name = args[0].capitalize()
-    
+
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
-    
+
     if PHONE_BOOK[name].birthday:
         PHONE_BOOK[name].birthday = None
         return f'{name} was deleted'
     else:
         return 'no info aobout birthday'
-    
+
 
 def change_address(name):
     """
@@ -186,8 +185,7 @@ def show_contact(args):
         for contact in PHONE_BOOK:
             result += f'\n{PHONE_BOOK[contact]} \n{separate}'
         return result
-    
-    
+
 
 @input_error
 def search_contacts(args):
@@ -205,6 +203,39 @@ def search_contacts(args):
             result += f"{name} with:\n {', '.join(all_phones)} \n BD: {bd} \n address: {address}"
         return result
     return f"no contacts with such request: {args[0]}"
+
+
+@input_error
+def search_birthday(args):
+    """
+    Функція повертає всі контакти, в яких
+    ДН через days днів
+    """
+    if not args:
+        return "Введіть будь ласка дні"
+
+    try:
+        days = int(args[0])
+    except:
+        return "Введіть будь ласка числове значення"
+
+    data = PHONE_BOOK.search_contacts_birthday(days)
+
+    if not data:
+        return f"У жодного з ваших контактів немає дня народження впродовж {days} днів."
+
+    to_return = []
+    sorted_data = dict(sorted(data.items(), key=lambda x: x[1]))
+
+    for contact in sorted_data:
+        if sorted_data[contact] == 0:
+            to_return.append(
+                f"У {contact} сьогодня день народження")
+        else:
+            to_return.append(
+                f"{contact} має день народження через {data[contact]} дні")
+
+    return "\n".join(to_return)
 
 
 @input_error
@@ -248,7 +279,7 @@ def helps(*args):
                 f'{Fore.GREEN}show contact{Style.RESET_ALL} - will show all contacts. Show without name will show all contacts. format: [searching text]',
                 f'{Fore.GREEN}delete birthday{Style.RESET_ALL} - will delete contact Bday. format [name]',
                 #f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
-                #f'{Fore.GREEN}upcoming_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
+                f'{Fore.GREEN}search_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
                 f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook and notes',
                 f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook and notes',
                 f'{Fore.GREEN}sort{Style.RESET_ALL} - will make magik and sort you files. Give only dir ;)',
@@ -266,9 +297,6 @@ def helps(*args):
                 ]
 
     return '\n'.join(commands)
-
-
-
 
 
 def break_f(*args):
@@ -432,6 +460,7 @@ def search_tag(args):
     else:
         return "ви не вибрали жотдного тегу"
 
+
 @input_error
 def save(*args):
     """
@@ -474,8 +503,8 @@ def parser(text):
             .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
             .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
             .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
-            .replace("show contact", "show_contact").replace("show contacts", "show_contact")
-
+            .replace("search birthday", "search_birthday").replace("search bd", "search_birthday")\
+            .replace("show contact", "show_contact").replace("show contacts", "show_contact")\
 
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
@@ -512,7 +541,8 @@ def fun_name(fun):
         "load": load,
         "change_phone": change_phone,
         "delete_phone": delete_phone,
-        "show_contact": show_contact
+        "show_contact": show_contact,
+        "search_birthday": search_birthday
     }
 
     return fun_dict.get(fun, break_f)

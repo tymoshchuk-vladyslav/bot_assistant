@@ -1,5 +1,5 @@
 from collections import UserDict
-from datetime import date
+from datetime import date, timedelta
 import re
 
 
@@ -42,6 +42,35 @@ class AddressBook(UserDict):
                         contacts.append(self.data[key])
 
         return contacts
+
+    def search_contacts_birthday(self, days):
+        """
+        Метод, який шукає контакти в адресній книзі,
+        в яких день народження через задану кулькість днів
+        """
+        contacts_with_birthday = []
+
+        for contact in self.data:
+            if self.data[contact].birthday:
+                contacts_with_birthday.append(self.data[contact])
+
+        today = date.today()
+        contacts_to_return = {}
+
+        for contact in contacts_with_birthday:
+            birthday_value = str(contact.birthday.value)
+            splitted = birthday_value.split("-")
+            counter = 0
+            while counter != days + 1:
+                reference_date = today + timedelta(days=counter)
+                if date(year=reference_date.year, month=int(splitted[1]), day=int(splitted[2])) == reference_date:
+                    contacts_to_return[contact.name.value] = counter
+                    break
+                else:
+                    counter += 1
+                    continue
+
+        return contacts_to_return
 
 
 class Record:
@@ -169,7 +198,7 @@ class Record:
     def __str__(self):
         return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.email}'
     # ДОПИСАТИ ЕМАІЛ після реалзіації
- 
+
 
 class Field:
     """
