@@ -125,19 +125,20 @@ def add_birthday(args):
 @input_error
 def add_email(name):
     """
-    Функція для додавання електронної адреси до контакту.
-    :return:
+    Функція для додавання ел. пошти до контакту.
     """
-    name = name.title()
+
+    name = name[0].title()
 
     if name not in PHONE_BOOK:
-        return f"Ім'я {name} не знайдене в адресній книзі"
-
-    record = PHONE_BOOK[name]
-    user_email = input(f"Введіть email {name}: ")
-    record.add_email(user_email)
-    return f"У {name} додано нову ел. пошту - {user_email}."
-
+        return f" {name} імя не знайдено в адресній книзі, ви можете додайте {name} ввівши команду 'add'."
+    else:
+        user_email = input(f"Введіть email {name}: ")
+        if user_email not in PHONE_BOOK[name].get_emails():
+            PHONE_BOOK[name].add_email(user_email)
+            return f"У {name} додано нову ел. пошту - {user_email}."
+        else:
+            return f"{name} вже має ел. адресу {user_email}"
 
 
 def del_birthday(args):
@@ -198,16 +199,16 @@ def change_email(name):
     """
     Функція для редагування електронної пошти контакту.
     """
-    name = name.title()
+    
+    name = name[0].title()
 
     if name not in PHONE_BOOK:
-        return f"Ім'я {name} не знайдене в адресній книзі"
-    
-    record = PHONE_BOOK[name]
-    user_email = input(f"Введіть нову ел. пошту {name}: ")
-    record.change_email(user_email)
-    return "Ел. пошта змінена"
-
+        return f" {name} імя не знайдено в адресній книзі, ви можете додайте {name} ввівши команду 'add'."
+    else:
+        record = PHONE_BOOK[name]
+        user_email = input(f"Введіть нову ел. пошту {name}: ")
+        record.change_email(user_email)
+        return f"Ел. пошта у {name} змінена"
 
 
 def show_contact(args):
@@ -262,14 +263,17 @@ def delete_phone(args):
 @input_error
 def delete_email(data):
     """
-    Функція для видалення електронної пошти контакту.
+    функція для видалення вибраної ел. пошти у контакта
     """
-    name, email = data.strip().split("")
-    record = PHONE_BOOK[name]
-    if record.delete_email(email):
-        return f"Ел. пошта {email} у {name} видалена."
-    return f"{name} не має даної ел. пошти"
 
+    name = name[0].title()
+
+    if name not in PHONE_BOOK:
+        return f" {name} імя не знайдено в адресній книзі, ви можете додайте {name} ввівши команду 'add'."
+    else:
+        record = PHONE_BOOK[name]
+        result = record.delete_email()
+        return result
 
 
 def good_bye(*args):
@@ -514,7 +518,7 @@ def parser(text):
         normalise_text = text.replace(
             "good bye", "good_bye").replace("show all", "show_all").replace("upcoming birthday", "upcoming_birthday")\
             .replace("add address", "add_address").replace("add birthday", "add_birthday")\
-            .replace("add bd", "add_birthday").replace("add bday", "add_birthday").replace("add email", "add_email")\
+            .replace("add bd", "add_birthday").replace("add bday", "add_birthday")\
             .replace("search contacts", "search_contacts").replace("add phone", "add_phone")\
             .replace("change phone", "change_phone").replace("change phones", "change_phone")\
             .replace("delete phone", "delete_phone").replace("del phone", "delete_phone")\
@@ -524,8 +528,8 @@ def parser(text):
             .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
             .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
             .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
-            .replace("show contact", "show_contact").replace("show contacts", "show_contact").replace("add email", "add_email")\
-            .replace("change email", "change_email").replace("delete email", "delete_email")
+            .replace("show contact", "show_contact").replace("show contacts", "show_contact")\
+            .replace("add email", "add_email").replace("change email", "change_email").replace("delete email", "delete_email")
 
 
         # формуємо кортеж із назви функції і аргументів для неї

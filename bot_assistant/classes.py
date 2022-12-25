@@ -58,7 +58,7 @@ class Record:
         self.phones = []
         self.address = []
         self.birthday = None
-        self.email = []
+        self.email_dict = []
 
     def add_address(self, address):
         """
@@ -87,7 +87,7 @@ class Record:
         """
         Метод для додавання нової ел. пошти до контакта.
         """
-        self.email.append(EmailContact(email))
+        self.email_dict.append(EmailContact(email))
 
 
     def get_phones(self):
@@ -103,6 +103,10 @@ class Record:
         """
         all_address = [address.value for address in self.address]
         return all_address
+
+    def get_emails(self):
+        all_emails = [email.value for email in self.email_dict]
+        return all_emails
 
     def change_address(self, address):
         """
@@ -156,23 +160,25 @@ class Record:
         """
         Метод для редагування ел. пошти у контакта.
         """
-        if len(self.email) == 0:
-            return "контакт ще не має ел. пошти."
-        elif len(self.email) == 1:
-            old_email = self.email[0].value
-            self.email[0] = EmailContact(new_email)
+        if len(self.email_dict) == 0:
+            return f"{self.name.value} ще не має ел. пошти."
+        elif len(self.email_dict) == 1:
+            old_email = self.email_dict[0].value
+            self.email_dict[0] = EmailContact(new_email)
             return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
         else:
-            print(f"Виберіть ел. пошту, для редагування.")
+            print("Виберіть ел. пошту, для редагування.")
             i = 1
-            for e_mail in self.email:
+            for e_mail in self.email_dict:
                 print(f"№  {i}  :  {e_mail.value}")
                 i += 1
-            user_choice = int(input(f"Введіть №..."))
-            old_email = self.email[user_choice].value
-            self.email[user_choice - 1] = EmailContact(new_email)
-            return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
-
+            user_choice = int(input("Введіть № - "))
+            if user_choice in range(i):
+                old_email = self.email_dict[user_choice].value
+                self.email_dict[user_choice - 1] = EmailContact(new_email)
+                return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
+            else:
+                return "Ви ввели невірне значення. Спробуйте ще раз."
 
     def delete_phone(self):
         """
@@ -199,15 +205,26 @@ class Record:
         """
         Метод для видалення ел. пошти у контакта.
         """
-        for eml in self.email:
-            if eml.value in email:
-                self.email.remove(eml)
-                return True
-        return False
-
+        if len(self.email_dict) == 0:
+            return f"{self.name.value} не має ел. пошти, для видалення."
+        elif len(self.email_dict) == 1:
+            deleting_email = self.email_dict.pop(0)
+            return f"{deleting_email.value} був видалений для контакту {self.name.value}"
+        else:
+            print("Виберіть необхідну для видалення ел. пошту.")
+            i = 1
+            for e_mail in self.email_dict:
+                print(f"№  {i}  :  {e_mail.value}")
+                i += 1
+            user_choice = int(input("Введіть № - "))
+            if user_choice in range(i):
+                deleting_email = self.email_dict.pop(user_choice - 1)
+                return f"{deleting_email.value} був видалений для контакту {self.name.value}"
+            else:
+                return "Ви ввели невірне значення. Спробуйте ще раз."
 
     def __str__(self):
-        return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.email}'
+        return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.get_emails()}'
     # ДОПИСАТИ ЕМАІЛ після реалзіації
  
 
@@ -310,7 +327,7 @@ class EmailContact(Field):
         """
         EmailContact setter.
         """
-        if not re.findall(r"\b[a-zA-z][\w_.]+@[a-zA-z]+\.[a-zA-z]{2,}[.]]", value):
+        if not re.findall(r"\b[A-Za-z][\w+.]+@\w+[.][a-z]{2,3}", value):
             raise ValueError(
                 '''Невірний формат ел. пошти. 
                  Приклад вводу - "****@ukr.net"
