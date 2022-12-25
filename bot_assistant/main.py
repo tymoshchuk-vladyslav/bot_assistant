@@ -211,7 +211,13 @@ def search_birthday(args):
     Функція повертає всі контакти, в яких
     ДН через days днів
     """
-    days = int(args[0])
+    if not args:
+        return "Введіть будь ласка дні"
+
+    try:
+        days = int(args[0])
+    except:
+        return "Введіть будь ласка числове значення"
 
     data = PHONE_BOOK.search_contacts_birthday(days)
 
@@ -219,14 +225,15 @@ def search_birthday(args):
         return f"У жодного з ваших контактів немає дня народження впродовж {days} днів."
 
     to_return = []
+    sorted_data = dict(sorted(data.items(), key=lambda x: x[1]))
 
-    for contact in data:
-        if data[contact] == 1:
+    for contact in sorted_data:
+        if sorted_data[contact] == 0:
             to_return.append(
-                f"{contact} має день народження через {data[contact]} день")
+                f"У {contact} сьогодня день народження")
         else:
             to_return.append(
-                f"{contact} має день народження через {data[contact]} днів")
+                f"{contact} має день народження через {data[contact]} дні")
 
     return "\n".join(to_return)
 

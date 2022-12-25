@@ -51,7 +51,7 @@ class AddressBook(UserDict):
         contacts_with_birthday = []
 
         for contact in self.data:
-            if self.data[contact].birthday.value:
+            if self.data[contact].birthday:
                 contacts_with_birthday.append(self.data[contact])
 
         today = date.today()
@@ -60,8 +60,8 @@ class AddressBook(UserDict):
         for contact in contacts_with_birthday:
             birthday_value = str(contact.birthday.value)
             splitted = birthday_value.split("-")
-            counter = 1
-            while counter != days:
+            counter = 0
+            while counter != days + 1:
                 reference_date = today + timedelta(days=counter)
                 if date(year=reference_date.year, month=int(splitted[1]), day=int(splitted[2])) == reference_date:
                     contacts_to_return[contact.name.value] = counter
