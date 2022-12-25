@@ -1,5 +1,6 @@
 from collections import UserDict
 from datetime import date, timedelta
+from pickle import load, dump
 import re
 
 
@@ -34,6 +35,21 @@ class AddressBook(UserDict):
         """
         deleted = self.data.pop(name)
         return deleted.name.value
+
+    def dump_data(self):
+        """
+        Метод для сереалізації даних в файл save_data.bin за допомогою pickle.
+        """
+        with open("save_data/save_data.bin", "wb") as file:
+            dump(self.data, file)
+
+    def load_data(self):
+        """
+        Метод для десереалізації даних з файлу save_data.bin за допомогою pickle.
+        """
+        with open("save_data/save_data.bin", "rb") as file:
+            new_data = load(file)
+            self.data = new_data
 
     def search_contacts(self, search_value):
         """
