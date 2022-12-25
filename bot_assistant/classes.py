@@ -28,6 +28,13 @@ class AddressBook(UserDict):
         """
         self.data[record.name.value] = record
 
+    def delete_record(self, name):
+        """
+        Метод для видалення запису з книги
+        """
+        deleted = self.data.pop(name)
+        return deleted.name.value
+
     def search_contacts(self, search_value):
         """
         Метод для пошуку контактів серед книги.
