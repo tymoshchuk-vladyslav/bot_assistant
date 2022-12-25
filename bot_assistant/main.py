@@ -261,6 +261,20 @@ def delete_phone(args):
     return result
 
 
+@input_error
+def delete_contact(args):
+    """
+    Функція видалення контакта з книги
+    """
+    name = args[0].capitalize()
+
+    if name not in PHONE_BOOK:
+        return f"Контакту {name} немає у словнику."
+
+    contact = PHONE_BOOK.delete_record(name)
+    return f"{contact} був видалений з книги"
+
+
 def good_bye(*args):
     """
     Функція для завершення роботи бота.
@@ -281,11 +295,13 @@ def helps(*args):
                 f'{Fore.GREEN}add email{Style.RESET_ALL} - will adding new address to contact in format: [Name] [email]',
                 f'{Fore.GREEN}add birthday{Style.RESET_ALL} - will adding new address to contact in format: [Name] [birthday]',
                 f'{Fore.GREEN}change address{Style.RESET_ALL} - will change address of you contact. format for change: [Name] [New address]',
+                f'{Fore.GREEN}change phone{Style.RESET_ALL} - will change old phone with new value. format for change: [Name] [New phone]',
                 f'{Fore.GREEN}search contacts{Style.RESET_ALL} - will search all contacts by name or phone number. format: [searching text]',
                 f'{Fore.GREEN}show contact{Style.RESET_ALL} - will show all contacts. Show without name will show all contacts. format: [searching text]',
                 f'{Fore.GREEN}delete birthday{Style.RESET_ALL} - will delete contact Bday. format [name]',
+                f'{Fore.GREEN}delete contact{Style.RESET_ALL} - will delete contact. format [name]',
                 #f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
-                f'{Fore.GREEN}search_birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
+                f'{Fore.GREEN}search birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
                 f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook and notes',
                 f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook and notes',
                 f'{Fore.GREEN}sort{Style.RESET_ALL} - will make magik and sort you files. Give only dir ;)',
@@ -511,6 +527,7 @@ def parser(text):
             .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
             .replace("search birthday", "search_birthday").replace("search bd", "search_birthday")\
             .replace("show contact", "show_contact").replace("show contacts", "show_contact")\
+            .replace("delete contact", "delete_contact").replace("del contact", "delete_contact")
 
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
@@ -548,7 +565,8 @@ def fun_name(fun):
         "change_phone": change_phone,
         "delete_phone": delete_phone,
         "show_contact": show_contact,
-        "search_birthday": search_birthday
+        "search_birthday": search_birthday,
+        "delete_contact": delete_contact
     }
 
     return fun_dict.get(fun, break_f)
