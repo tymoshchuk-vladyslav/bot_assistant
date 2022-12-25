@@ -221,8 +221,7 @@ def show_contact(args):
         result = ''
         for contact in PHONE_BOOK:
             result += f'\n{PHONE_BOOK[contact]} \n{separate}'
-        return result
-    
+        return result   
     
 
 @input_error

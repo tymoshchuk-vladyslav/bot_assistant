@@ -89,7 +89,6 @@ class Record:
         """
         self.email_dict.append(EmailContact(email))
 
-
     def get_phones(self):
         """
         Метод для певернення списку всіх номерів телефонів.
@@ -225,7 +224,6 @@ class Record:
 
     def __str__(self):
         return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.get_emails()}'
-    # ДОПИСАТИ ЕМАІЛ після реалзіації
  
 
 class Field:
@@ -333,4 +331,3 @@ class EmailContact(Field):
                  Приклад вводу - "****@ukr.net"
                  ''')
         self.__value = value
-
