@@ -1,7 +1,7 @@
-from classes import AddressBook, Birthday, Phone, Record
+from bot_assistant.classes import AddressBook, Birthday, Phone, Record
 from colorama import Fore, Style
-from notes import Notes, Note, Tag, Body
-from sort import sort_fun
+from bot_assistant.notes import Notes, Note, Tag, Body
+from bot_assistant.sort import sort_fun
 
 
 """
