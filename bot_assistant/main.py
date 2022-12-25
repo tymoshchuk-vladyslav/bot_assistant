@@ -2,6 +2,7 @@ from bot_assistant.classes import AddressBook, Birthday, Phone, Record
 from colorama import Fore, Style
 from bot_assistant.notes import Notes, Note, Tag, Body
 from bot_assistant.sort import sort_fun
+import os.path
 
 
 """
@@ -518,9 +519,9 @@ def save(*args):
     Функція збереження нотаток.
     """
     NOTES.save_notes()
-    ####### тут місце під сейв адресбуку  ########
+    PHONE_BOOK.dump_data()
 
-    return "saved"
+    return "data saved"
 
 
 @input_error
@@ -528,11 +529,13 @@ def load(*args):
     """
     Функція завантаження нотаток.
     """
-    NOTES.load_notes()
+    if os.path.isfile("save_data/save_notes.bin"):
+        NOTES.load_notes()
 
-    ####### тут місце під лоад адресбуку  ########
+    if os.path.isfile("save_data/save_data.bin"):
+        PHONE_BOOK.load_data()
 
-    return "loaded"
+    return "data loaded"
 
 
 def parser(text):
@@ -557,7 +560,8 @@ def parser(text):
             .replace("search birthday", "search_birthday").replace("search bd", "search_birthday")\
             .replace("show contact", "show_contact").replace("show contacts", "show_contact")\
             .replace("delete contact", "delete_contact").replace("del contact", "delete_contact")\
-            .replace("delete address", "delete_address").replace("del address", "delete_address")
+            .replace("delete address", "delete_address").replace("del address", "delete_address")\
+            .replace("save", "save").replace("load", "load")
 
         # формуємо кортеж із назви функції і аргументів для неї
         return normalise_text.split()[0], normalise_text.split()[1:]
@@ -607,6 +611,8 @@ def main():
     """
     Логіка роботи бота помічника
     """
+
+    load()
 
     while True:
         user_input = input(
