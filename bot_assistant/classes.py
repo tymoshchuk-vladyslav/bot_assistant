@@ -195,6 +195,27 @@ class Record:
             self.phones[inp_user] = Phone(new_phone)
             return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
 
+    def delete_address(self):
+        """
+        Метод для видалення адреси у контакту.
+        """
+        if len(self.address) == 0:
+            return f"{self.name.value} не має адреси"
+
+        if len(self.address) == 1:
+            address_to_delete = self.address.pop(0)
+            return f"Адрес: {address_to_delete.value}, був видалений для контакту {self.name.value}"
+
+        else:
+            i = -1
+            print("Виберіть який телефон хочете видалити")
+            for adr in self.address:
+                i += 1
+                print(f"№ {i} : {adr.value}")
+            inp_user = int(input(f"Введіть №..."))
+            address_to_delete = self.address.pop(inp_user)
+            return f"Адрес: {address_to_delete.value}, був видалений для контакту {self.name.value}"
+
     def delete_phone(self):
         """
         метод для видалення номеру телефона
