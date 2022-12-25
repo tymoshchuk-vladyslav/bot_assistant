@@ -222,7 +222,10 @@ def search_birthday(args):
     data = PHONE_BOOK.search_contacts_birthday(days)
 
     if not data:
-        return f"У жодного з ваших контактів немає дня народження впродовж {days} днів."
+        if days > 0:
+            return f"У жодного з ваших контактів немає дня народження впродовж {days} днів."
+        elif days < 0:
+            return f"У жодного з ваших контактів не було дня народження {days * (-1)} днів назад"
 
     to_return = []
     sorted_data = dict(sorted(data.items(), key=lambda x: x[1]))
@@ -230,10 +233,13 @@ def search_birthday(args):
     for contact in sorted_data:
         if sorted_data[contact] == 0:
             to_return.append(
-                f"У {contact} сьогодня день народження")
-        else:
+                f"У {contact} сьогодні день народження")
+        elif sorted_data[contact] > 0:
             to_return.append(
                 f"{contact} має день народження через {data[contact]} дні")
+        elif sorted_data[contact] < 0:
+            to_return.append(
+                f"В {contact} був день народження {data[contact] * (-1)} днів назад")
 
     return "\n".join(to_return)
 
