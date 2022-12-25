@@ -518,6 +518,10 @@ def save(*args):
     """
     Функція збереження нотаток.
     """
+
+    if not os.path.isdir("save_data"):
+        os.mkdir("save_data")
+
     NOTES.save_notes()
     PHONE_BOOK.dump_data()
 
