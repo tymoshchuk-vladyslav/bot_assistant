@@ -5,7 +5,6 @@ from bot_assistant.sort import sort_fun
 import os.path
 
 
-
 """
 Бот помічник.
 Працює з командами (див функцію help.)
@@ -454,7 +453,6 @@ def helps(*args):
         f'{Fore.GREEN}delete contact{Style.RESET_ALL} - will delete contact. format [name]',
         f'{Fore.GREEN}delete address{Style.RESET_ALL} - will delete address. format [name]',
         f'{Fore.GREEN}delete email{Style.RESET_ALL} - will delete selected contact email. format [Name] [email]',
-        # f'{Fore.GREEN}phone{Style.RESET_ALL} - will show all phone numbers of your contacts. format [name]',
         f'{Fore.GREEN}search birthday{Style.RESET_ALL} - will show you upcoming Bday in  "n" days. format [quantity of days]',
         f'{Fore.GREEN}save{Style.RESET_ALL} - will save you addressbook and notes',
         f'{Fore.GREEN}load{Style.RESET_ALL} - will load you addressbook and notes',
@@ -705,6 +703,7 @@ def load(*args):
 
 ##############################################################################################################################
 
+
 def levinstein(str_1, str_2):
     n, m = len(str_1), len(str_2)
     if n > m:
@@ -768,7 +767,6 @@ def analyze_fun(user_input):
             return (one_element_result[1], rest_one_element)
 
 ##############################################################################################################################
-
 
 
 def fun_name(fun):
