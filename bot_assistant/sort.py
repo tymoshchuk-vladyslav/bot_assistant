@@ -92,9 +92,9 @@ def sort_fun(*args):
     if path.is_dir():
         recursive_iterdir(path)
         cleaner(path)
-        print('Magic worked. Look at your folder')
+        return 'Magic worked. Look at your folder'
     else:
-        print(f'There is no such dir on you PC: "{path}"')
+        return f'There is no such dir on you PC: "{path}"'
 
 
 # if __name__ == '__main__':
