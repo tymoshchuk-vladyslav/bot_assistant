@@ -4,6 +4,8 @@ from bot_assistant.notes_classes import Notes, Note, Tag, Body
 from bot_assistant.sort import sort_fun
 import os.path
 
+
+
 """
 Бот помічник.
 Працює з командами (див функцію help.)
