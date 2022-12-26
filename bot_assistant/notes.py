@@ -1,4 +1,5 @@
 from collections import UserList
+from colorama import Fore, Style
 from pickle import dump, load
 import re
 
@@ -48,7 +49,7 @@ class Notes(UserList):
         '''технічна функція для вивдення всіх нотатків'''
         result = ''
         for idx, record in enumerate(self.data, start=1):
-            result += f'---note №{idx}---\n{str(record)}\n'
+            result += f'{Fore.RED}---note №{idx}---{Style.RESET_ALL}\n{str(record)}\n'
         return result
 
     def sort_notes(self, way=1):
@@ -102,7 +103,7 @@ class Note:
             return 'no such tag'
 
     def __str__(self):
-        return f'{self.tag.value}\n {self.body.value}\n' + 50*'-'  # + '\n'
+        return f'{Fore.GREEN}{self.tag.value}{Style.RESET_ALL}\n {Fore.BLUE}{self.body.value}{Style.RESET_ALL}\n' + 50*'-'  # + '\n'
 
     # def __repr__(self):
     #     return f'{self.tag.value[:3]}...\n {self.body.value[:50]}...\n' + 50*'-' +'\n'
