@@ -115,12 +115,10 @@ def add_birthday(args):
     if not args:
         return "Передайте ім'я контакту та дату"
 
-    
     birthday = None
     name = args[0].capitalize()
     if args[1:]:
         birthday = args[1:][0]
-
 
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
@@ -184,6 +182,7 @@ def change_birthday(args):
         return f'{new_date} was added to {name}'
 
 
+@input_error
 def del_birthday(args):
     """
     Видаляє день народження у контакта. приймає імя контакту
@@ -203,22 +202,24 @@ def del_birthday(args):
         return 'no info aobout birthday'
 
 
-def change_address(name):
+@input_error
+def change_address(args):
     """
     Функція для редагування адреси контакту.
-    :param name:
+    :param args:
     :return:
     """
-    if not name:
+    if not args:
         raise ValueError("Не було передано ім'я контакту...")
 
-    name = name.title()
+    name = args[0].capitalize()
 
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
 
     record = PHONE_BOOK[name]
     user_address = input("Введіть адресу: ")
+
     result = record.change_address(user_address)
 
     if result in "У контакту немає адреси.":
@@ -269,6 +270,7 @@ def change_email(name):
         return result
 
 
+@input_error
 def show_contact(args):
     """
     Функція виводить всі контакти в книзі. Якщо передано імя виведе данні по цьому контакту
@@ -404,6 +406,7 @@ def delete_email(name):
         return result
 
 
+@input_error
 def delete_contact(args):
     """
     Функція видалення контакта з книги
@@ -673,6 +676,7 @@ def parser(text):
             .replace("add bd", "add_birthday").replace("add bday", "add_birthday")\
             .replace("search contacts", "search_contacts").replace("add phone", "add_phone")\
             .replace("change phone", "change_phone").replace("change phones", "change_phone")\
+            .replace("change address", "change_address").replace("change adr", "change_address")\
             .replace("delete phone", "delete_phone").replace("del phone", "delete_phone")\
             .replace("add note", "add_note").replace("del note", "del_note").replace("delete note", "del_note")\
             .replace("change note", "change_note").replace("change tag", "change_tag")\
