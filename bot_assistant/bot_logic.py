@@ -517,8 +517,11 @@ def del_note(args):
     """
     На вході приймає номери нотатків які треба видалити, при наявності таких видаляє.
     """
-    number = args
-    print(number)
+    if args:
+        number = args
+    else:
+        raise Exception("Ви не ввели номер нотатки")
+
     del_numbers = []
     for i in number:
         try:
@@ -526,7 +529,7 @@ def del_note(args):
         except IndexError:
             print(f"немає нотатки з таким номером {int(i)}")
         else:
-            del_numbers.append(int(i) - 1)
+            del_numbers.append(int(i))
 
     return f"нотатки {del_numbers} були видалені"
 
@@ -536,6 +539,10 @@ def change_note(args):
     """
     Приймає номер нотатку і новий текст. міняє.
     """
+    if not args:
+        raise Exception('Ви не передали номеру нотатки та новий текст')
+    # elif not args[1:]:
+    #     raise Exception('Ви не передали новий текст')
 
     number = int(args[0])
     new_text = ' '.join(args[1:])
@@ -555,7 +562,6 @@ def change_tag(args):
 
     while True:
         action = input("Оберіть дію add/del:\n")
-        print(action)
         if action == "cancel":
             return
         elif not action or action not in ['add', 'del']:
@@ -567,7 +573,7 @@ def change_tag(args):
         number = input("Введіть номер нотатки:\n")
         if number == "cancel":
             return
-        elif not number or not number.isdigit():
+        elif not number or not number.isdigit() or int(number) > len(NOTES):
             print("не коректне значення, для того щоб відмінити дію - оберіть cancel")
         else:
             break
@@ -633,7 +639,6 @@ def search_tag(args):
             return "нотаток не виявлено"
     else:
         return "ви не вибрали жотдного тегу"
-
 
 @input_error
 def save(*args):
@@ -705,6 +710,7 @@ def load(*args):
 
 
 def levinstein(str_1, str_2):
+    '''Алгоритм Левыншейна, порывнюэ 2 текста ы повертає кількість символів на які вони відрізняються'''
     n, m = len(str_1), len(str_2)
     if n > m:
         str_1, str_2 = str_2, str_1
@@ -725,6 +731,7 @@ def levinstein(str_1, str_2):
 
 
 def min_fun(value):
+    '''знаходить найближче значення до переліку функцій бота'''
     functions = ['add', 'add address', 'add bd', 'add bday', 'add birthday', 'add email', 'add note', 'add phone',
                  'change address',
                  'change bd', 'change bd', 'change bday', 'change birthday', 'change email', 'change note',
@@ -748,6 +755,7 @@ def min_fun(value):
 
 
 def analyze_fun(user_input):
+    '''Аналізує як поділити введений текст, перші 2 слова чи перше слово на функцію та решту. Для 2ух слів є випередження 25% можливо налаштувати'''
     splited = user_input.split()
     one_element_match = splited[0]
 
