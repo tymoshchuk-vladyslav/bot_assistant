@@ -176,10 +176,6 @@ class Record:
         all_address = [address.value for address in self.address]
         return all_address
 
-    def get_emails(self):
-        all_emails = [email.value for email in self.email_list]
-        return all_emails
-
     def change_address(self, address):
         """
         Метод для редагування адрес у контакту.
