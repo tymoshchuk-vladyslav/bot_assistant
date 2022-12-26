@@ -161,6 +161,13 @@ class Record:
         """
         all_phones = [phone.value for phone in self.phones]
         return all_phones
+    
+    def get_emails(self):
+        """
+        Метод для певернення списку всіх номерів телефонів.
+        """
+        all_emails = [email.value for email in self.email_list]
+        return all_emails
 
     def get_addresses(self):
         """

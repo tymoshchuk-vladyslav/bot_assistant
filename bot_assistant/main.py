@@ -1,10 +1,14 @@
-from bot_assistant.classes import AddressBook, Birthday, Phone, Record
+# from bot_assistant.classes import AddressBook, Birthday, Phone, Record
+# from colorama import Fore, Style
+# from bot_assistant.notes import Notes, Note, Tag, Body
+# from bot_assistant.sort import sort_fun
+# import os.path
+
+from classes import AddressBook, Birthday, Phone, Record
 from colorama import Fore, Style
-from bot_assistant.notes import Notes, Note, Tag, Body
-from bot_assistant.sort import sort_fun
+from notes import Notes, Note, Tag, Body
+from sort import sort_fun
 import os.path
-
-
 
 
 """
@@ -46,14 +50,11 @@ def add(args):
     elif not args[1:]:
         return "Ви не передали номер телефону"
 
-    
-
     name = args[0].capitalize()
     phone = args[1:][0]
 
     if name in PHONE_BOOK:
         return f"{name} вже у словнику"
-      
 
     PHONE_BOOK.add_record(Record(name))
     PHONE_BOOK[name].add_phone(phone)
@@ -93,7 +94,6 @@ def add_phone(args):
     if not args:
         return "Передайте ім'я контакту та номер телефону"
 
-    
     name = args[0].capitalize()
     phone = None
     if args[1:]:
@@ -117,16 +117,14 @@ def add_birthday(args):
     Функція для додавання дня народження до контакту.
     :return:
     """
-    
+
     if not args:
         return "Передайте ім'я контакту та дату"
 
-    
     birthday = None
     name = args[0].capitalize()
     if args[1:]:
         birthday = args[1:][0]
-
 
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
@@ -242,7 +240,7 @@ def change_phone(args):
         return "Передайте ім'я контакту та новий номер"
     elif not args[1:]:
         return "Ви не передали новий номер телефону"
-    
+
     name = args[0].capitalize()
     new_phone = args[1:][0]
 
@@ -263,7 +261,7 @@ def change_email(name):
 
     if not name:
         return "Не було введенно жодного аргументу..."
-    
+
     name = name[0].title()
 
     if name not in PHONE_BOOK:
@@ -288,7 +286,7 @@ def show_contact(args):
         for contact in PHONE_BOOK:
             result += f'\n{PHONE_BOOK[contact]} \n{separate}'
 
-        return result   
+        return result
 
 
 @input_error
@@ -297,11 +295,9 @@ def search_contacts(args):
     Функція для пошуку контакту.
     """
 
-    
     if not args:
         return show_contact(args)
-        
-        
+
     result = ""
     contacts = PHONE_BOOK.search_contacts(*args)
     if contacts:
@@ -309,8 +305,9 @@ def search_contacts(args):
             name = contact.name.value
             bd = contact.birthday
             address = list(map(lambda x: str(x), contact.get_addresses()))
+            email = list(map(lambda x: str(x), contact.get_emails()))
             all_phones = list(map(lambda x: str(x), contact.get_phones()))
-            result += f"{name} with:\n Phones:{', '.join(all_phones)} \n BD: {bd} \n address: {address}\n"
+            result += f"{name} with:\n Phones:{', '.join(all_phones)} \n BD: {bd} \n email: {email} \n address: {address}\n"
         return result
     return f"no contacts with such request: {args[0]}"
 
@@ -380,7 +377,7 @@ def delete_phone(args):
     """
     if not args:
         return "Введіть будь ласка І'мя"
-    
+
     name = args[0].capitalize()
 
     if name not in PHONE_BOOK:
@@ -418,7 +415,7 @@ def delete_contact(args):
     """
     if not args:
         return "Введіть будь ласка І'мя"
-    
+
     name = args[0].capitalize()
 
     if name not in PHONE_BOOK:
@@ -452,7 +449,7 @@ def helps(*args):
                 f'{Fore.GREEN}change phone{Style.RESET_ALL} - will change old phone with new value. format for change: [Name] [New phone]',
                 f'{Fore.GREEN}search contacts{Style.RESET_ALL} - will search all contacts by name or phone number. format: [searching text]',
                 f'{Fore.GREEN}show contact{Style.RESET_ALL} - will show all contacts. Show without name will show all contacts. format: [searching text]',
-                f'{Fore.GREEN}change birthday{Style.RESET_ALL} - will change contact Bday. format [name][new date]',   
+                f'{Fore.GREEN}change birthday{Style.RESET_ALL} - will change contact Bday. format [name][new date]',
                 f'{Fore.GREEN}delete birthday{Style.RESET_ALL} - will delete contact Bday. format [name]',
                 f'{Fore.GREEN}delete contact{Style.RESET_ALL} - will delete contact. format [name]',
                 f'{Fore.GREEN}delete address{Style.RESET_ALL} - will delete address. format [name]',
@@ -599,9 +596,9 @@ def sort_notes(args):
     """
     if args:
         number = int(args[0])
-        if number not in [1, -1]:
+        if int(number) not in [1, -1]:
             return "1 чи порожньо для сортування, -1 для зворотнього сортування"
-        return NOTES.sort_notes(number)
+        return NOTES.sort_notes(int(number))
     else:
         return NOTES.sort_notes()
 
@@ -668,37 +665,99 @@ def load(*args):
 
     return "data loaded"
 
-
-def parser(text):
-    """
-    Функція формує кортеж із назви функції і аргументів для неї.
-    """
-
-    if text:
-        normalise_text = text.replace(
-            "good bye", "good_bye").replace("show all", "show_all").replace("upcoming birthday", "upcoming_birthday")\
-            .replace("add address", "add_address").replace("add birthday", "add_birthday")\
-            .replace("add bd", "add_birthday").replace("add bday", "add_birthday")\
-            .replace("search contacts", "search_contacts").replace("add phone", "add_phone")\
-            .replace("change phone", "change_phone").replace("change phones", "change_phone")\
-            .replace("delete phone", "delete_phone").replace("del phone", "delete_phone")\
-            .replace("add note", "add_note").replace("del note", "del_note").replace("delete note", "del_note")\
-            .replace("change note", "change_note").replace("change tag", "change_tag")\
-            .replace("sort notes", "sort_notes").replace("search notes", "search_notes").replace("search note", "search_notes")\
-            .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
-            .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
-            .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
-            .replace("add email", "add_email").replace("change email", "change_email").replace("delete email", "delete_email")\
-            .replace("search birthday", "search_birthday").replace("search bd", "search_birthday")\
-            .replace("show contact", "show_contact").replace("show contacts", "show_contact")\
-            .replace("delete contact", "delete_contact").replace("del contact", "delete_contact")\
-            .replace("delete address", "delete_address").replace("del address", "delete_address")\
-            .replace("save", "save").replace("load", "load")\
-            .replace("change birthday", "change_birthday").replace("change bd", "change_birthday").replace("change bday", "change_birthday")
+######################################################################################
 
 
-        # формуємо кортеж із назви функції і аргументів для неї
-        return normalise_text.split()[0], normalise_text.split()[1:]
+def levinstein(str_1, str_2):
+    n, m = len(str_1), len(str_2)
+    if n > m:
+        str_1, str_2 = str_2, str_1
+        n, m = m, n
+
+    current_row = range(n + 1)
+    for i in range(1, m + 1):
+        previous_row, current_row = current_row, [i] + [0] * n
+        for j in range(1, n + 1):
+            add, delete, change = previous_row[j] + \
+                1, current_row[j - 1] + 1, previous_row[j - 1]
+
+            if str_1[j - 1] != str_2[i - 1]:
+                change += 1
+            current_row[j] = min(add, delete, change)
+
+    return round(current_row[n]/len(str_1), 5)*100  # current_row[n] #
+
+
+def min_fun(value):
+    functions = ['add', 'add address', 'add bd', 'add bday', 'add birthday', 'add email', 'add note', 'add phone', 'change address',
+                 'change bd', 'change bd', 'change bday', 'change birthday', 'change email', 'change note', 'change phone',
+                 'change tag', 'close', 'del address', 'del bd', 'del bday', 'del birthday', 'del contact', 'del email', 'del note',
+                 'del phone', 'del phone', 'delete address', 'delete bd', 'delete bday', 'delete birthday', 'delete contact',
+                 'delete email', 'delete note', 'delete phone', 'exit', 'good bye', 'hello', 'help', 'load', 'save',
+                 'search birthday', 'search contacts', 'search notes', 'search tag', 'show contact', 'show notes', 'sort',
+                 'sort notes']
+
+    result = [float('inf'), '']
+    for item in functions:
+        close = levinstein(value, item)
+        if close < result[0]:
+            result[0], result[1] = close, item
+
+    return result
+
+
+def analyze_fun(user_input):
+    splited = user_input.split()
+    one_element_match = splited[0]
+
+    if not splited[1:]:
+        return (min_fun(one_element_match)[1], [])
+    else:
+        two_element_match = ' '.join(splited[:2])
+        rest_one_element = splited[1:]
+        rest_two_element = splited[2:]
+
+        one_element_result = min_fun(one_element_match)
+        two_element_result = min_fun(two_element_match)
+
+        if two_element_result[0] - 25 < one_element_result[0]:
+            return (two_element_result[1], rest_two_element)
+        else:
+            return (one_element_result[1], rest_one_element)
+
+
+######################################################################################
+
+# def parser(text):
+#     """
+#     Функція формує кортеж із назви функції і аргументів для неї.
+#     """
+
+#     if text:
+#         normalise_text = text.replace(
+#             "good bye", "good_bye").replace("show all", "show_all").replace("upcoming birthday", "upcoming_birthday")\
+#             .replace("add address", "add_address").replace("add birthday", "add_birthday")\
+#             .replace("add bd", "add_birthday").replace("add bday", "add_birthday")\
+#             .replace("search contacts", "search_contacts").replace("add phone", "add_phone")\
+#             .replace("change phone", "change_phone").replace("change phones", "change_phone")\
+#             .replace("delete phone", "delete_phone").replace("del phone", "delete_phone")\
+#             .replace("add note", "add_note").replace("del note", "del_note").replace("delete note", "del_note")\
+#             .replace("change note", "change_note").replace("change tag", "change_tag")\
+#             .replace("sort notes", "sort_notes").replace("search notes", "search_notes").replace("search note", "search_notes")\
+#             .replace("search tag", "search_tag").replace("search tags", "search_tag").replace("show notes", "show_notes")\
+#             .replace("del birthday", "del_birthday").replace("delete birthday", "del_birthday").replace("del bd", "del_birthday")\
+#             .replace("delete bd", "del_birthday").replace("delete bday", "del_birthday").replace("del bday", "del_birthday")\
+#             .replace("add email", "add_email").replace("change email", "change_email").replace("delete email", "delete_email")\
+#             .replace("search birthday", "search_birthday").replace("search bd", "search_birthday")\
+#             .replace("show contact", "show_contact").replace("show contacts", "show_contact")\
+#             .replace("delete contact", "delete_contact").replace("del contact", "delete_contact")\
+#             .replace("delete address", "delete_address").replace("del address", "delete_address")\
+#             .replace("save", "save").replace("load", "load")\
+#             .replace("change birthday", "change_birthday").replace("change bd", "change_birthday").replace("change bday", "change_birthday")
+
+
+#         # формуємо кортеж із назви функції і аргументів для неї
+#         return normalise_text.split()[0], normalise_text.split()[1:]
 
 
 def fun_name(fun):
@@ -709,37 +768,53 @@ def fun_name(fun):
     fun_dict = {
         "hello": helps,
         "help": helps,
-        "good_bye": good_bye,
+        "good bye": good_bye,
         "close": good_bye,
         "exit": good_bye,
         "add": add,
-        "add_phone": add_phone,
-        "add_address": add_address,
-        "add_birthday": add_birthday,
-        "del_birthday": del_birthday,
-        "change_address": change_address,
-        "search_contacts": search_contacts,
+        "add phone": add_phone,
+        "add address": add_address,
+        "add birthday": add_birthday,
+        "add bday": add_birthday,
+        "add bd": add_birthday,
+        "del birthday": del_birthday,
+        "del bday": del_birthday,
+        "del bd": del_birthday,
+        "delete birthday": del_birthday,
+        "delete bday": del_birthday,
+        "delete bd": del_birthday,
+        "change birthday": change_birthday,
+        "change bday": change_birthday,
+        "change bd": change_birthday,
+        "change address": change_address,
+        "search contacts": search_contacts,
         "sort": sort_fun,
-        "add_note": add_note,
-        "del_note": del_note,
-        "change_note": change_note,
-        "change_tag": change_tag,
-        "sort_notes": sort_notes,
-        "show_notes": show_notes,
-        "search_notes": search_notes,
-        "search_tag": search_tag,
+        "add note": add_note,
+        "del note": del_note,
+        "delete note": del_note,
+        "change note": change_note,
+        "change tag": change_tag,
+        "sort notes": sort_notes,
+        "show notes": show_notes,
+        "search notes": search_notes,
+        "search tag": search_tag,
         "save": save,
         "load": load,
-        "change_phone": change_phone,
-        "delete_phone": delete_phone,
-        "show_contact": show_contact,
-        "add_email": add_email,
-        "change_email": change_email,
-        "delete_email": delete_email,
-        "search_birthday": search_birthday,
-        "delete_contact": delete_contact,
-        "delete_address": delete_address,
-        "change_birthday": change_birthday
+        "change phone": change_phone,
+        "delete phone": delete_phone,
+        "del phone": delete_phone,
+        "del phone": delete_phone,
+        "show contact": show_contact,
+        "add email": add_email,
+        "change email": change_email,
+        "delete email": delete_email,
+        "del email": delete_email,
+        "search birthday": search_birthday,
+        "delete contact": delete_contact,
+        "del contact": delete_contact,
+        "delete address": delete_address,
+        "del address": delete_address
+        
     }
 
     return fun_dict.get(fun, break_f)
@@ -755,8 +830,8 @@ def main():
     while True:
         user_input = input(
             "Введіть будь ласка команду: (або використай команду help)\n").lower()
-        fun, args = parser(user_input)
-        # print(fun, args)
+        fun, args = analyze_fun(user_input)
+        print(fun, '-------', args)
         text = fun_name(fun)(args)
         print(text)
 
