@@ -11,9 +11,9 @@ def main():
 
     while True:
         user_input = input(
-            f"{Fore.GREEN}Введіть будь ласка команду: (або використай команду help){Style.RESET_ALL}\n").lower()
-        fun, args = parser(user_input)
-        # print(fun, args)
+            "Введіть будь ласка команду: (або використай команду help)\n").lower()
+        fun, args = analyze_fun(user_input)
+        # print(fun, '-------', args)
         text = fun_name(fun)(args)
         print(text)
 
