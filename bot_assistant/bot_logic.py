@@ -622,6 +622,25 @@ def search_notes(args):
     return NOTES.search(text)
 
 
+@input_error
+def search_tag(args):
+    """
+    Функція для пошуку нотатки за тегом.
+    """
+
+    search_args = args
+
+    if search_args:
+        result = ""
+        for i in search_args:
+            print(i)
+            result += NOTES.search_by_tag(i)
+        if result:
+            return result
+        else:
+            return "нотаток не виявлено"
+    else:
+        return "ви не вибрали жотдного тегу"
 
 @input_error
 def save(*args):
