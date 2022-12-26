@@ -97,6 +97,4 @@ def sort_fun(*args):
         return f'There is no such dir on you PC: "{path}"'
 
 
-# if __name__ == '__main__':
-#     main_fun()
-#     print("Finish")
+

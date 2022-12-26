@@ -6,6 +6,7 @@ import os.path
 
 
 
+
 """
 Бот помічник.
 Працює з командами (help, hello, add, change, delete_user, user_add_phone, user_delete_phone, phone, show_all, 
@@ -40,20 +41,23 @@ def add(args):
     """
     Функція для додавання нового контакту до книги.
     """
-    phone = None
+    if not args:
+        return "Передайте ім'я контакту та номер телефону"
+    elif not args[1:]:
+        return "Ви не передали номер телефону"
+
+    
+
     name = args[0].capitalize()
-    if args[1:]:
-        phone = args[1:][0]
+    phone = args[1:][0]
 
     if name in PHONE_BOOK:
         return f"{name} вже у словнику"
       
-    if not phone:
-        return 'Ви не ввели телефон'
-    else:
-        PHONE_BOOK.add_record(Record(name))
-        PHONE_BOOK[name].add_phone(phone)
-        return f"{name} was added with {phone}"
+
+    PHONE_BOOK.add_record(Record(name))
+    PHONE_BOOK[name].add_phone(phone)
+    return f"{name} was added with {phone}"
 
 
 @input_error
@@ -86,7 +90,10 @@ def add_phone(args):
     Функція для додавання телефону до контакту.
     :return:
     """
+    if not args:
+        return "Передайте ім'я контакту та номер телефону"
 
+    
     name = args[0].capitalize()
     phone = None
     if args[1:]:
@@ -110,6 +117,11 @@ def add_birthday(args):
     Функція для додавання дня народження до контакту.
     :return:
     """
+    
+    if not args:
+        return "Передайте ім'я контакту та дату"
+
+    
     birthday = None
     name = args[0].capitalize()
     if args[1:]:
@@ -154,10 +166,37 @@ def add_email(args):
             return f"{name} вже має ел. адресу {user_email}"
 
 
+@input_error
+def change_birthday(args):
+    """
+    Видаляє день народження у контакта. приймає імя контакту
+    """
+    if not args:
+        return "Передайте ім'я контакту та нову дату"
+    elif not args[1:]:
+        return "Ви не передали нову дату"
+
+    name = args[0].capitalize()
+    new_date = args[1:][0]
+
+    if name not in PHONE_BOOK:
+        return f"{name} імя не знайдено в словнику"
+
+    if PHONE_BOOK[name].birthday:
+        PHONE_BOOK[name].birthday.value = new_date
+        return f'{name} birthday was changing to {new_date}'
+    else:
+        PHONE_BOOK[name].add_birthday(new_date)
+        return f'{new_date} was added to {name}'
+
+
 def del_birthday(args):
     """
     Видаляє день народження у контакта. приймає імя контакту
     """
+    if not args:
+        return "Передайте ім'я контакту"
+
     name = args[0].capitalize()
 
     if name not in PHONE_BOOK:
@@ -199,7 +238,11 @@ def change_phone(args):
     """
     Функція для заміни телефону
     """
-
+    if not args:
+        return "Передайте ім'я контакту та новий номер"
+    elif not args[1:]:
+        return "Ви не передали новий номер телефону"
+    
     name = args[0].capitalize()
     new_phone = args[1:][0]
 
@@ -253,6 +296,12 @@ def search_contacts(args):
     """
     Функція для пошуку контакту.
     """
+
+    
+    if not args:
+        return show_contact(args)
+        
+        
     result = ""
     contacts = PHONE_BOOK.search_contacts(*args)
     if contacts:
@@ -261,7 +310,7 @@ def search_contacts(args):
             bd = contact.birthday
             address = list(map(lambda x: str(x), contact.get_addresses()))
             all_phones = list(map(lambda x: str(x), contact.get_phones()))
-            result += f"{name} with:\n Phones:{', '.join(all_phones)} \n BD: {bd} \n address: {address}"
+            result += f"{name} with:\n Phones:{', '.join(all_phones)} \n BD: {bd} \n address: {address}\n"
         return result
     return f"no contacts with such request: {args[0]}"
 
@@ -329,7 +378,9 @@ def delete_phone(args):
     """
     функція для видалення номеру телефона
     """
-
+    if not args:
+        return "Введіть будь ласка І'мя"
+    
     name = args[0].capitalize()
 
     if name not in PHONE_BOOK:
@@ -365,6 +416,9 @@ def delete_contact(args):
     """
     Функція видалення контакта з книги
     """
+    if not args:
+        return "Введіть будь ласка І'мя"
+    
     name = args[0].capitalize()
 
     if name not in PHONE_BOOK:
@@ -398,6 +452,7 @@ def helps(*args):
                 f'{Fore.GREEN}change phone{Style.RESET_ALL} - will change old phone with new value. format for change: [Name] [New phone]',
                 f'{Fore.GREEN}search contacts{Style.RESET_ALL} - will search all contacts by name or phone number. format: [searching text]',
                 f'{Fore.GREEN}show contact{Style.RESET_ALL} - will show all contacts. Show without name will show all contacts. format: [searching text]',
+                f'{Fore.GREEN}change birthday{Style.RESET_ALL} - will change contact Bday. format [name][new date]',   
                 f'{Fore.GREEN}delete birthday{Style.RESET_ALL} - will delete contact Bday. format [name]',
                 f'{Fore.GREEN}delete contact{Style.RESET_ALL} - will delete contact. format [name]',
                 f'{Fore.GREEN}delete address{Style.RESET_ALL} - will delete address. format [name]',
@@ -638,7 +693,8 @@ def parser(text):
             .replace("show contact", "show_contact").replace("show contacts", "show_contact")\
             .replace("delete contact", "delete_contact").replace("del contact", "delete_contact")\
             .replace("delete address", "delete_address").replace("del address", "delete_address")\
-            .replace("save", "save").replace("load", "load")
+            .replace("save", "save").replace("load", "load")\
+            .replace("change birthday", "change_birthday").replace("change bd", "change_birthday").replace("change bday", "change_birthday")
 
 
         # формуємо кортеж із назви функції і аргументів для неї
@@ -682,7 +738,8 @@ def fun_name(fun):
         "delete_email": delete_email,
         "search_birthday": search_birthday,
         "delete_contact": delete_contact,
-        "delete_address": delete_address
+        "delete_address": delete_address,
+        "change_birthday": change_birthday
     }
 
     return fun_dict.get(fun, break_f)
