@@ -188,7 +188,7 @@ class Record:
         :return:
         """
 
-        if len(self.address) == 0:
+        if not self.address:
             return f"У контакту немає адреси."
 
         elif len(self.address) == 1:
@@ -213,7 +213,7 @@ class Record:
         """
         метод заміни номеру телефона
         """
-        if len(self.phones) == 0:
+        if not self.phones:
             self.phones.append(Phone(new_phone))
             return f"{new_phone} був доданий до словника для контакту {self.name.value}"
 
@@ -241,7 +241,7 @@ class Record:
         """
         Метод для редагування ел. пошти у контакта.
         """
-        if len(self.email_list) == 0:
+        if not self.email_list:
             return f"{self.name.value} ще не має ел. пошти."
         elif len(self.email_list) == 1:
             old_email = self.email_list[0].value
@@ -271,7 +271,7 @@ class Record:
         """
         Метод для видалення адреси у контакту.
         """
-        if len(self.address) == 0:
+        if not self.address:
             return f"{self.name.value} не має адреси"
 
         if len(self.address) == 1:
@@ -296,7 +296,7 @@ class Record:
         """
         метод для видалення номеру телефона
         """
-        if len(self.phones) == 0:
+        if not self.phones:
             return f"{self.name.value} не має няіких номерів"
 
         if len(self.phones) == 1:
@@ -321,7 +321,7 @@ class Record:
         """
         Метод для видалення ел. пошти у контакта.
         """
-        if len(self.email_list) == 0:
+        if not self.email_list:
             return f"{self.name.value} не має ел. пошти, для видалення."
 
         elif len(self.email_list) == 1:
