@@ -812,7 +812,6 @@ def fun_name(fun):
         "change phone": change_phone,
         "delete phone": delete_phone,
         "del phone": delete_phone,
-        "del phone": delete_phone,
         "show contact": show_contact,
         "add email": add_email,
         "change email": change_email,
