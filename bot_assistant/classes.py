@@ -202,6 +202,10 @@ class Record:
                 i += 1
                 print(f"№  {i}  :  {adr.value}")
             inp_user = int(input(f"Введіть №..."))
+
+            if inp_user not in range(0, i + 1):
+                raise ValueError("Такого номеру немає в списку адрес.")
+
             self.address[inp_user] = AddressContact(address)
             return f"{address}"
 
@@ -225,6 +229,10 @@ class Record:
                 i += 1
                 print(f"№ {i} : {phone.value}")
             inp_user = int(input(f"Введіть №..."))
+
+            if inp_user not in range(0, i + 1):
+                raise ValueError("Такого номеру немає в списку телефонів.")
+
             old_phone = self.phones[inp_user].value
             self.phones[inp_user] = Phone(new_phone)
             return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
@@ -277,6 +285,10 @@ class Record:
                 i += 1
                 print(f"№ {i} : {adr.value}")
             inp_user = int(input(f"Введіть №..."))
+
+            if inp_user not in range(0, i + 1):
+                raise ValueError("Такого номеру немає в списку адрес.")
+
             address_to_delete = self.address.pop(inp_user)
             return f"Адрес: {address_to_delete.value}, був видалений для контакту {self.name.value}"
 
@@ -298,6 +310,10 @@ class Record:
                 i += 1
                 print(f"№ {i} : {phone.value}")
             inp_user = int(input(f"Введіть №..."))
+
+            if inp_user not in range(0, i + 1):
+                raise ValueError("Такого номеру немає в списку телефонів.")
+
             phone_to_delete = self.phones.pop(inp_user)
             return f"{phone_to_delete.value} був видалений для контакту {self.name.value}"
 
