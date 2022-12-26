@@ -640,17 +640,21 @@ def search_tag(args):
     else:
         return "ви не вибрали жотдного тегу"
 
+
 @input_error
 def save(*args):
     """
-    Функція збереження нотаток.
+    Функція збереження data.
     """
 
     if not os.path.isdir("save_data"):
         os.mkdir("save_data")
 
-    NOTES.save_notes()
-    PHONE_BOOK.dump_data()
+    path_addressbook = "save_data/save_data.bin"
+    path_notes = "save_data/save_notes.bin"
+
+    NOTES.dump_data(NOTES.data, path_notes)
+    PHONE_BOOK.dump_data(PHONE_BOOK.data, path_addressbook)
 
     return f"{Fore.RED}data saved{Style.RESET_ALL}"
 
@@ -658,13 +662,16 @@ def save(*args):
 @input_error
 def load(*args):
     """
-    Функція завантаження нотаток.
+    Функція завантаження data.
     """
+    global NOTES
+    global PHONE_BOOK
+
     if os.path.isfile("save_data/save_notes.bin"):
-        NOTES.load_notes()
+        NOTES = NOTES.load_data("save_data/save_notes.bin")
 
     if os.path.isfile("save_data/save_data.bin"):
-        PHONE_BOOK.load_data()
+        PHONE_BOOK = PHONE_BOOK.load_data("save_data/save_data.bin")
 
     return f"{Fore.RED}data loaded{Style.RESET_ALL}"
 
