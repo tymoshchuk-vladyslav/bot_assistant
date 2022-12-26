@@ -206,25 +206,34 @@ class Record:
             phone_to_delete = self.phones.pop(inp_user)
             return f"{phone_to_delete.value} був видалений для контакту {self.name.value}"
 
-    def delete_email(self, email):
+    def delete_email(self):
         """
         Метод для видалення ел. пошти у контакта.
         """
         if len(self.email_list) == 0:
             return f"{self.name.value} не має ел. пошти, для видалення."
+
         elif len(self.email_list) == 1:
             deleting_email = self.email_list.pop(0)
             return f"{deleting_email.value} був видалений для контакту {self.name.value}"
+
         else:
             print("Виберіть необхідну для видалення ел. пошту.")
-            i = 1
+            i = -1
+
             for e_mail in self.email_list:
-                print(f"№  {i}  :  {e_mail.value}")
                 i += 1
+                print(f"№  {i}  :  {e_mail.value}")
+
             user_choice = int(input("Введіть № - "))
-            if user_choice in range(i):
-                deleting_email = self.email_list.pop(user_choice - 1)
+
+            if user_choice not in range(0, i + 1):
+                return f"Такого номеру немає в списку емейлів..."
+
+            if user_choice in range(0, i + 1):
+                deleting_email = self.email_list.pop(user_choice)
                 return f"{deleting_email.value} був видалений для контакту {self.name.value}"
+
             else:
                 return "Ви ввели невірне значення. Спробуйте ще раз."
 

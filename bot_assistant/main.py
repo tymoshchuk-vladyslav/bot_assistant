@@ -282,6 +282,7 @@ def delete_email(name):
 
     if name not in PHONE_BOOK:
         return f" {name} імя не знайдено в адресній книзі, ви можете додати {name} ввівши команду add."
+
     else:
         record = PHONE_BOOK[name]
         result = record.delete_email()
