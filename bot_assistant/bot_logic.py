@@ -71,10 +71,10 @@ def add_address(args):
     if address:
         PHONE_BOOK[name].add_address(address)
         return f" {address} was added to {name}"
-    else:
-        user_address = input("Введіть адресу: ")
-        PHONE_BOOK[name].add_address(user_address)
-        return f" {user_address} was added to {name}"
+
+    user_address = input("Введіть адресу: ")
+    PHONE_BOOK[name].add_address(user_address)
+    return f" {user_address} was added to {name}"
 
 
 @input_error
@@ -97,10 +97,10 @@ def add_phone(args):
     if phone:
         PHONE_BOOK[name].add_phone(phone)
         return f" {phone} was added to {name}"
-    else:
-        user_phone = input("Введіть телефон: ")
-        PHONE_BOOK[name].add_phone(user_phone)
-        return f" {user_phone} was added to {name}"
+
+    user_phone = input("Введіть телефон: ")
+    PHONE_BOOK[name].add_phone(user_phone)
+    return f" {user_phone} was added to {name}"
 
 
 @input_error
@@ -124,10 +124,10 @@ def add_birthday(args):
     if birthday:
         PHONE_BOOK[name].add_birthday(birthday)
         return f" {birthday} was added to {name}"
-    else:
-        user_birthday = input("Введіть ДН: ")
-        PHONE_BOOK[name].add_birthday(user_birthday)
-        return f" {user_birthday} was added to {name}"
+
+    user_birthday = input("Введіть ДН: ")
+    PHONE_BOOK[name].add_birthday(user_birthday)
+    return f" {user_birthday} was added to {name}"
 
 
 @input_error
@@ -135,25 +135,24 @@ def add_email(args):
     """
     Функція для додавання ел. пошти до контакту.
     """
-    name = None
-
     if not args:
-        print("Не було введенно жодного аргументу...")
-        name = input(f"Введіть ім'я контакту: ").capitalize()
+        return "Передайте ім'я контакту та email"
 
-    elif args:
-        name = args[0].capitalize()
+    name = args[0].capitalize()
+    email = None
+    if args[1:]:
+        email = args[1:][0]
 
     if name not in PHONE_BOOK:
-        return f" {name} імя не знайдено в адресній книзі, ви можете додайте {name} ввівши команду 'add'."
+        return f"{name} імя не знайдено в словнику"
 
-    else:
-        user_email = input(f"Введіть email {name}: ")
-        if user_email not in PHONE_BOOK[name].get_emails():
-            PHONE_BOOK[name].add_email(user_email)
-            return f"У {name} додано нову ел. пошту - {user_email}."
-        else:
-            return f"{name} вже має ел. адресу {user_email}"
+    if email:
+        PHONE_BOOK[name].add_email(email)
+        return f" {email} was added to {name}"
+
+    user_email = input("Введіть email: ")
+    PHONE_BOOK[name].add_email(user_email)
+    return f" {user_email} was added to {name}"
 
 
 @input_error
@@ -174,10 +173,10 @@ def change_birthday(args):
 
     if PHONE_BOOK[name].birthday:
         PHONE_BOOK[name].birthday.value = new_date
-        return f'{name} birthday was changing to {new_date}'
-    else:
-        PHONE_BOOK[name].add_birthday(new_date)
-        return f'{new_date} was added to {name}'
+        return f"{name} birthday was changing to {new_date}"
+
+    PHONE_BOOK[name].add_birthday(new_date)
+    return f"{new_date} was added to {name}"
 
 
 @input_error
@@ -195,9 +194,9 @@ def del_birthday(args):
 
     if PHONE_BOOK[name].birthday:
         PHONE_BOOK[name].birthday = None
-        return f'{name} was deleted'
-    else:
-        return 'no info aobout birthday'
+        return f"{name} was deleted"
+
+    return "no info about birthday"
 
 
 @input_error
@@ -261,11 +260,11 @@ def change_email(name):
 
     if name not in PHONE_BOOK:
         return f" {name} імя не знайдено в адресній книзі, ви можете додайте {name} ввівши команду 'add'."
-    else:
-        record = PHONE_BOOK[name]
-        user_email = input(f"Введіть нову ел. пошту {name}: ")
-        result = record.change_email(user_email)
-        return result
+
+    record = PHONE_BOOK[name]
+    user_email = input(f"Введіть нову ел. пошту {name}: ")
+    result = record.change_email(user_email)
+    return result
 
 
 @input_error
@@ -277,12 +276,12 @@ def show_contact(args):
     if args:
         name = args[0].capitalize()
         return f'{separate} \n{PHONE_BOOK.get(name, "no such name")} \n{separate}'
-    else:
-        result = ''
-        for contact in PHONE_BOOK:
-            result += f'\n{PHONE_BOOK[contact]} \n{separate}'
 
-        return result
+    result = ''
+    for contact in PHONE_BOOK:
+        result += f'\n{PHONE_BOOK[contact]} \n{separate}'
+
+    return result
 
 
 @input_error
@@ -316,10 +315,12 @@ def search_birthday(args):
     if not args:
         return "Введіть будь ласка дні"
 
+    days = 7
+
     try:
         days = int(args[0])
-    except:
-        return "Введіть будь ласка числове значення"
+    except ValueError:
+        print("Введіть будь ласка числове значення")
 
     data = PHONE_BOOK.search_contacts_birthday(days)
 
@@ -398,10 +399,9 @@ def delete_email(name):
     if name not in PHONE_BOOK:
         return f" {name} імя не знайдено в адресній книзі, ви можете додати {name} ввівши команду add."
 
-    else:
-        record = PHONE_BOOK[name]
-        result = record.delete_email()
-        return result
+    record = PHONE_BOOK[name]
+    result = record.delete_email()
+    return result
 
 
 @input_error
