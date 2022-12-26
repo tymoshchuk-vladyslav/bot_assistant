@@ -5,8 +5,6 @@ from bot_assistant.sort import sort_fun
 import os.path
 
 
-
-
 """
 Бот помічник.
 Працює з командами (help, hello, add, change, delete_user, user_add_phone, user_delete_phone, phone, show_all, 
@@ -46,14 +44,11 @@ def add(args):
     elif not args[1:]:
         return "Ви не передали номер телефону"
 
-    
-
     name = args[0].capitalize()
     phone = args[1:][0]
 
     if name in PHONE_BOOK:
         return f"{name} вже у словнику"
-      
 
     PHONE_BOOK.add_record(Record(name))
     PHONE_BOOK[name].add_phone(phone)
@@ -93,7 +88,6 @@ def add_phone(args):
     if not args:
         return "Передайте ім'я контакту та номер телефону"
 
-    
     name = args[0].capitalize()
     phone = None
     if args[1:]:
@@ -297,10 +291,8 @@ def search_contacts(args):
     Функція для пошуку контакту.
     """
 
-    
     if not args:
         return show_contact(args)
-        
         
     result = ""
     contacts = PHONE_BOOK.search_contacts(*args)
@@ -652,7 +644,7 @@ def save(*args):
     NOTES.save_notes()
     PHONE_BOOK.dump_data()
 
-    return "data saved"
+    return f"{Fore.RED}data saved{Style.RESET_ALL}"
 
 
 @input_error
@@ -666,7 +658,7 @@ def load(*args):
     if os.path.isfile("save_data/save_data.bin"):
         PHONE_BOOK.load_data()
 
-    return "data loaded"
+    return f"{Fore.RED}data loaded{Style.RESET_ALL}"
 
 
 def parser(text):
@@ -754,7 +746,7 @@ def main():
 
     while True:
         user_input = input(
-            "Введіть будь ласка команду: (або використай команду help)\n").lower()
+            f"{Fore.GREEN}Введіть будь ласка команду: (або використай команду help){Style.RESET_ALL}\n").lower()
         fun, args = parser(user_input)
         # print(fun, args)
         text = fun_name(fun)(args)
