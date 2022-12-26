@@ -6,8 +6,7 @@ import os.path
 
 """
 Бот помічник.
-Працює з командами (help, hello, add, change, delete_user, user_add_phone, user_delete_phone, phone, show_all, 
-save_data, search, good_bye, close, exit, .)
+Працює з командами (див функцію help.)
 """
 
 PHONE_BOOK = AddressBook()
