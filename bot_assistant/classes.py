@@ -1,4 +1,5 @@
 from collections import UserDict
+from colorama import Fore, Style
 from datetime import date, timedelta
 from pickle import load, dump
 import re
@@ -125,6 +126,13 @@ class Record:
         self.address = []
         self.birthday = None
         self.email_list = []
+
+    def __str__(self):
+        return f'{Fore.BLUE}    Name:{Style.RESET_ALL}{self.name.value} \n' \
+               f'{Fore.BLUE}  Phones:{Style.RESET_ALL}{self.get_phones()} \n' \
+               f'{Fore.BLUE} Address:{Style.RESET_ALL}{self.get_addresses()} \n' \
+               f'{Fore.BLUE}Birthday:{Style.RESET_ALL}{self.birthday} \n' \
+               f'{Fore.BLUE}   Email:{Style.RESET_ALL}{self.get_emails()}'
 
     def add_address(self, address):
         """
@@ -323,9 +331,6 @@ class Record:
 
             else:
                 return "Ви ввели невірне значення. Спробуйте ще раз."
-
-    def __str__(self):
-        return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.get_emails()}'
 
 
 class Field:

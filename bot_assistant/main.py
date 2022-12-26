@@ -5,7 +5,6 @@ from bot_assistant.sort import sort_fun
 import os.path
 
 
-
 """
 Бот помічник.
 Працює з командами (help, hello, add, change, delete_user, user_add_phone, user_delete_phone, phone, show_all, 
@@ -597,7 +596,7 @@ def save(*args):
     NOTES.save_notes()
     PHONE_BOOK.dump_data()
 
-    return "data saved"
+    return f"{Fore.RED}data saved{Style.RESET_ALL}"
 
 
 @input_error
@@ -611,7 +610,7 @@ def load(*args):
     if os.path.isfile("save_data/save_data.bin"):
         PHONE_BOOK.load_data()
 
-    return "data loaded"
+    return f"{Fore.RED}data loaded{Style.RESET_ALL}"
 
 
 def parser(text):
@@ -697,7 +696,7 @@ def main():
 
     while True:
         user_input = input(
-            "Введіть будь ласка команду: (або використай команду help)\n").lower()
+            f"{Fore.GREEN}Введіть будь ласка команду: (або використай команду help){Style.RESET_ALL}\n").lower()
         fun, args = parser(user_input)
         # print(fun, args)
         text = fun_name(fun)(args)
