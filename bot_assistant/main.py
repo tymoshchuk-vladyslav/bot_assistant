@@ -5,6 +5,7 @@ from bot_assistant.sort import sort_fun
 import os.path
 
 
+
 """
 Бот помічник.
 Працює з командами (help, hello, add, change, delete_user, user_add_phone, user_delete_phone, phone, show_all, 
@@ -39,17 +40,20 @@ def add(args):
     """
     Функція для додавання нового контакту до книги.
     """
-
+    phone = None
     name = args[0].capitalize()
-    phone = args[1:][0]
+    if args[1:]:
+        phone = args[1:][0]
 
     if name in PHONE_BOOK:
         return f"{name} вже у словнику"
+      
+    if not phone:
+        return 'Ви не ввели телефон'
     else:
         PHONE_BOOK.add_record(Record(name))
         PHONE_BOOK[name].add_phone(phone)
-
-    return f"{name} was added with {phone}"
+        return f"{name} was added with {phone}"
 
 
 @input_error
@@ -106,11 +110,11 @@ def add_birthday(args):
     Функція для додавання дня народження до контакту.
     :return:
     """
-
+    birthday = None
     name = args[0].capitalize()
-    birthday = args[1:][0]
-    print(name)
-    print(birthday)
+    if args[1:]:
+        birthday = args[1:][0]
+
 
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
@@ -119,7 +123,7 @@ def add_birthday(args):
         PHONE_BOOK[name].add_birthday(birthday)
         return f" {birthday} was added to {name}"
     else:
-        user_birthday = input("Введіть телефон: ")
+        user_birthday = input("Введіть ДН: ")
         PHONE_BOOK[name].add_birthday(user_birthday)
         return f" {user_birthday} was added to {name}"
 
@@ -257,7 +261,7 @@ def search_contacts(args):
             bd = contact.birthday
             address = list(map(lambda x: str(x), contact.get_addresses()))
             all_phones = list(map(lambda x: str(x), contact.get_phones()))
-            result += f"{name} with:\n {', '.join(all_phones)} \n BD: {bd} \n address: {address}"
+            result += f"{name} with:\n Phones:{', '.join(all_phones)} \n BD: {bd} \n address: {address}"
         return result
     return f"no contacts with such request: {args[0]}"
 
