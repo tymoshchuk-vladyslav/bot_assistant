@@ -123,15 +123,22 @@ def add_birthday(args):
 
 
 @input_error
-def add_email(name):
+def add_email(args):
     """
     Функція для додавання ел. пошти до контакту.
     """
+    name = None
 
-    name = name[0].title()
+    if not args:
+        print("Не було введенно жодного аргументу...")
+        name = input(f"Введіть ім'я контакту: ").capitalize()
+
+    elif args:
+        name = args[0].capitalize()
 
     if name not in PHONE_BOOK:
         return f" {name} імя не знайдено в адресній книзі, ви можете додайте {name} ввівши команду 'add'."
+
     else:
         user_email = input(f"Введіть email {name}: ")
         if user_email not in PHONE_BOOK[name].get_emails():
@@ -199,6 +206,9 @@ def change_email(name):
     """
     Функція для редагування електронної пошти контакту.
     """
+
+    if not name:
+        return "Не було введенно жодного аргументу..."
     
     name = name[0].title()
 
@@ -207,8 +217,8 @@ def change_email(name):
     else:
         record = PHONE_BOOK[name]
         user_email = input(f"Введіть нову ел. пошту {name}: ")
-        record.change_email(user_email)
-        return f"Ел. пошта у {name} змінена"
+        result = record.change_email(user_email)
+        return result
 
 
 def show_contact(args):
@@ -260,15 +270,18 @@ def delete_phone(args):
 
 
 @input_error
-def delete_email(data):
+def delete_email(name):
     """
     функція для видалення вибраної ел. пошти у контакта
     """
 
+    if not name:
+        return "Не було введенно жодного аргументу..."
+
     name = name[0].title()
 
     if name not in PHONE_BOOK:
-        return f" {name} імя не знайдено в адресній книзі, ви можете додайте {name} ввівши команду 'add'."
+        return f" {name} імя не знайдено в адресній книзі, ви можете додати {name} ввівши команду add."
     else:
         record = PHONE_BOOK[name]
         result = record.delete_email()

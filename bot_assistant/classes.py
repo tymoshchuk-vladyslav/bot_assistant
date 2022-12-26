@@ -58,7 +58,7 @@ class Record:
         self.phones = []
         self.address = []
         self.birthday = None
-        self.email_dict = []
+        self.email_list = []
 
     def add_address(self, address):
         """
@@ -87,7 +87,7 @@ class Record:
         """
         Метод для додавання нової ел. пошти до контакта.
         """
-        self.email_dict.append(EmailContact(email))
+        self.email_list.append(EmailContact(email))
 
     def get_phones(self):
         """
@@ -104,7 +104,7 @@ class Record:
         return all_address
 
     def get_emails(self):
-        all_emails = [email.value for email in self.email_dict]
+        all_emails = [email.value for email in self.email_list]
         return all_emails
 
     def change_address(self, address):
@@ -159,22 +159,28 @@ class Record:
         """
         Метод для редагування ел. пошти у контакта.
         """
-        if len(self.email_dict) == 0:
+        if len(self.email_list) == 0:
             return f"{self.name.value} ще не має ел. пошти."
-        elif len(self.email_dict) == 1:
-            old_email = self.email_dict[0].value
-            self.email_dict[0] = EmailContact(new_email)
+        elif len(self.email_list) == 1:
+            old_email = self.email_list[0].value
+            self.email_list[0] = EmailContact(new_email)
             return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
         else:
             print("Виберіть ел. пошту, для редагування.")
-            i = 1
-            for e_mail in self.email_dict:
-                print(f"№  {i}  :  {e_mail.value}")
+            i = -1
+            for e_mail in self.email_list:
                 i += 1
-            user_choice = int(input("Введіть № - "))
-            if user_choice in range(i):
-                old_email = self.email_dict[user_choice].value
-                self.email_dict[user_choice - 1] = EmailContact(new_email)
+                print(f"№  {i}  :  {e_mail.value}")
+
+            user_choice = int(input("Виберіть № для заміни: "))
+
+            if user_choice not in range(0, i + 1):
+                return f"Такого номеру немає в списку емейлів..."
+
+            elif user_choice in range(0, i + 1):
+                old_email = self.email_list[user_choice].value
+                self.email_list[user_choice] = EmailContact(new_email)
+
                 return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
             else:
                 return "Ви ввели невірне значення. Спробуйте ще раз."
@@ -204,20 +210,20 @@ class Record:
         """
         Метод для видалення ел. пошти у контакта.
         """
-        if len(self.email_dict) == 0:
+        if len(self.email_list) == 0:
             return f"{self.name.value} не має ел. пошти, для видалення."
-        elif len(self.email_dict) == 1:
-            deleting_email = self.email_dict.pop(0)
+        elif len(self.email_list) == 1:
+            deleting_email = self.email_list.pop(0)
             return f"{deleting_email.value} був видалений для контакту {self.name.value}"
         else:
             print("Виберіть необхідну для видалення ел. пошту.")
             i = 1
-            for e_mail in self.email_dict:
+            for e_mail in self.email_list:
                 print(f"№  {i}  :  {e_mail.value}")
                 i += 1
             user_choice = int(input("Введіть № - "))
             if user_choice in range(i):
-                deleting_email = self.email_dict.pop(user_choice - 1)
+                deleting_email = self.email_list.pop(user_choice - 1)
                 return f"{deleting_email.value} був видалений для контакту {self.name.value}"
             else:
                 return "Ви ввели невірне значення. Спробуйте ще раз."
@@ -320,7 +326,15 @@ class EmailContact(Field):
     Email контакту.
     Додається до списку email_contact, який створюється при ініціалізації класу Record.
     """
-    @Field.value.setter
+
+    def __init__(self, value):
+        super().__init__(value)
+
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
     def value(self, value: str):
         """
         EmailContact setter.
