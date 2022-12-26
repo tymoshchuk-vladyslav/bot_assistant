@@ -675,7 +675,7 @@ def fun_name(fun):
         "show_contact": show_contact,
         "add_email": add_email,
         "change_email": change_email,
-        "delete_email" : delete_email
+        "delete_email": delete_email,
         "search_birthday": search_birthday,
         "delete_contact": delete_contact,
         "delete_address": delete_address
