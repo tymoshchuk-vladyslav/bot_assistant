@@ -1,5 +1,6 @@
 from collections import UserDict
-from datetime import date
+from datetime import date, timedelta
+from pickle import load, dump
 import re
 
 
@@ -28,6 +29,28 @@ class AddressBook(UserDict):
         """
         self.data[record.name.value] = record
 
+    def delete_record(self, name):
+        """
+        Метод для видалення запису з книги
+        """
+        deleted = self.data.pop(name)
+        return deleted.name.value
+
+    def dump_data(self):
+        """
+        Метод для сереалізації даних в файл save_data.bin за допомогою pickle.
+        """
+        with open("save_data/save_data.bin", "wb") as file:
+            dump(self.data, file)
+
+    def load_data(self):
+        """
+        Метод для десереалізації даних з файлу save_data.bin за допомогою pickle.
+        """
+        with open("save_data/save_data.bin", "rb") as file:
+            new_data = load(file)
+            self.data = new_data
+
     def search_contacts(self, search_value):
         """
         Метод для пошуку контактів серед книги.
@@ -42,6 +65,49 @@ class AddressBook(UserDict):
                         contacts.append(self.data[key])
 
         return contacts
+
+    def search_contacts_birthday(self, days):
+        """
+        Метод, який шукає контакти в адресній книзі,
+        в яких день народження через задану кулькість днів
+        """
+        contacts_with_birthday = []
+
+        for contact in self.data:
+            if self.data[contact].birthday:
+                contacts_with_birthday.append(self.data[contact])
+
+        today = date.today()
+        contacts_to_return = {}
+
+        if days >= 0:
+            for contact in contacts_with_birthday:
+                birthday_value = str(contact.birthday.value)
+                splitted = birthday_value.split("-")
+                counter = 0
+                while counter != days + 1:
+                    reference_date = today + timedelta(days=counter)
+                    if date(year=reference_date.year, month=int(splitted[1]), day=int(splitted[2])) == reference_date:
+                        contacts_to_return[contact.name.value] = counter
+                        break
+                    else:
+                        counter += 1
+                        continue
+        elif days < 0:
+            for contact in contacts_with_birthday:
+                birthday_value = str(contact.birthday.value)
+                splitted = birthday_value.split("-")
+                counter = -1
+                while counter != days - 1:
+                    reference_date = today + timedelta(days=counter)
+                    if date(year=reference_date.year, month=int(splitted[1]), day=int(splitted[2])) == reference_date:
+                        contacts_to_return[contact.name.value] = counter
+                        break
+                    else:
+                        counter -= 1
+                        continue
+
+        return contacts_to_return
 
 
 class Record:
@@ -185,6 +251,27 @@ class Record:
             else:
                 return "Ви ввели невірне значення. Спробуйте ще раз."
 
+    def delete_address(self):
+        """
+        Метод для видалення адреси у контакту.
+        """
+        if len(self.address) == 0:
+            return f"{self.name.value} не має адреси"
+
+        if len(self.address) == 1:
+            address_to_delete = self.address.pop(0)
+            return f"Адрес: {address_to_delete.value}, був видалений для контакту {self.name.value}"
+
+        else:
+            i = -1
+            print("Виберіть який телефон хочете видалити")
+            for adr in self.address:
+                i += 1
+                print(f"№ {i} : {adr.value}")
+            inp_user = int(input(f"Введіть №..."))
+            address_to_delete = self.address.pop(inp_user)
+            return f"Адрес: {address_to_delete.value}, був видалений для контакту {self.name.value}"
+
     def delete_phone(self):
         """
         метод для видалення номеру телефона
@@ -239,7 +326,7 @@ class Record:
 
     def __str__(self):
         return f'  Name:{self.name.value} \nPhones:{self.get_phones()} \nAddress:{self.get_addresses()} \nBday:{self.birthday} \nEmail:{self.get_emails()}'
- 
+
 
 class Field:
     """

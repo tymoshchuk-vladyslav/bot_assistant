@@ -63,13 +63,13 @@ class Notes(UserList):
 
     def save_notes(self):
         '''серіалізує'''
-        filename = r"save_notes.bin"
+        filename = r"save_data/save_notes.bin"
         with open(filename, "wb") as file:
             dump(self.data, file)
 
     def load_notes(self):
         '''десереалізує'''
-        filename = r"save_notes.bin"
+        filename = r"save_data/save_notes.bin"
         try:
             with open(filename, "rb") as file:
                 self.data = load(file)
