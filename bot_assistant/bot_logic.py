@@ -50,7 +50,7 @@ def add(args):
         return f"{name} вже у словнику"
 
     PHONE_BOOK.add_record(Record(name))
-    PHONE_BOOK[name].add_phone(phone)
+    PHONE_BOOK[name].add_information(PHONE_BOOK[name].phones, Phone(phone))
     return f"{name} was added with {phone}"
 
 
@@ -295,14 +295,14 @@ def search_contacts(args):
         return show_contact(args)
 
     result = ""
-    contacts = PHONE_BOOK.search_contacts(*args)
+    contacts = PHONE_BOOK.search_contacts(args)
     if contacts:
         for contact in contacts:
             name = contact.name.value
             bd = contact.birthday
-            address = list(map(lambda x: str(x), contact.get_addresses()))
-            email = list(map(lambda x: str(x), contact.get_emails()))
-            all_phones = list(map(lambda x: str(x), contact.get_phones()))
+            address = list(map(lambda x: str(x), contact.get_information(contact.address)))
+            email = list(map(lambda x: str(x), contact.get_information(contact.email_list)))
+            all_phones = list(map(lambda x: str(x), contact.get_information(contact.phones)))
             result += f"{name} with:\n Phones:{', '.join(all_phones)} \n BD: {bd} \n email: {email} \n address: {address}\n"
         return result
     return f"no contacts with such request: {args[0]}"

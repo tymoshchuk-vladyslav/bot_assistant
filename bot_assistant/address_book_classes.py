@@ -72,13 +72,16 @@ class AddressBook(UserDict, SaveData):
         """
         Метод для пошуку контактів серед книги.
         """
+
         contacts = []
-        for key, val in self.data.items():
-            if search_value in key.lower():
+        for key in self.data:
+            val = self.data[key]
+            if search_value[0] in key.lower():
                 contacts.append(self.data[key])
+
             else:
-                for phone in val.get_phones():
-                    if search_value in phone:
+                for phone in val.phones:
+                    if search_value[0] in phone.value:
                         contacts.append(self.data[key])
 
         return contacts
@@ -145,14 +148,17 @@ class Record:
 
     def __str__(self):
         return f'{Fore.BLUE}    Name:{Style.RESET_ALL}{self.name.value} \n' \
-               f'{Fore.BLUE}  Phones:{Style.RESET_ALL}{self.get_phones()} \n' \
-               f'{Fore.BLUE} Address:{Style.RESET_ALL}{self.get_addresses()} \n' \
+               f'{Fore.BLUE}  Phones:{Style.RESET_ALL}{self.get_information(self.phones)} \n' \
+               f'{Fore.BLUE} Address:{Style.RESET_ALL}{self.get_information(self.address)} \n' \
                f'{Fore.BLUE}Birthday:{Style.RESET_ALL}{self.birthday} \n' \
-               f'{Fore.BLUE}   Email:{Style.RESET_ALL}{self.get_emails()}'
+               f'{Fore.BLUE}   Email:{Style.RESET_ALL}{self.get_information(self.email_list)}'
 
     @staticmethod
-    def add_information(list_info, info):
-        list_info.append(info)
+    def add_information(list_info, fild):
+        """
+        Метод для додавання інформації до списків phones, address, email_list.
+        """
+        list_info.append(fild)
 
     # def add_address(self, address):
     #     """
@@ -183,23 +189,31 @@ class Record:
     #     """
     #     self.email_list.append(EmailContact(email))
 
-    def get_phones(self):
-        """
-        Метод для певернення списку всіх номерів телефонів.
-        """
-        all_phones = [phone.value for phone in self.phones]
-        return all_phones
+    # def get_phones(self):
+    #     """
+    #     Метод для певернення списку всіх номерів телефонів.
+    #     """
+    #     all_phones = [phone.value for phone in self.phones]
+    #     return all_phones
 
-    def get_addresses(self):
-        """
-        Метод для повернення списку всіх адрес.
-        """
-        all_address = [address.value for address in self.address]
-        return all_address
+    # def get_addresses(self):
+    #     """
+    #     Метод для повернення списку всіх адрес.
+    #     """
+    #     all_address = [address.value for address in self.address]
+    #     return all_address
+    #
+    # def get_emails(self):
+    #     all_emails = [email.value for email in self.email_list]
+    #     return all_emails
 
-    def get_emails(self):
-        all_emails = [email.value for email in self.email_list]
-        return all_emails
+    @staticmethod
+    def get_information(fild):
+        """
+        Метод для повернення списку відповідно переданого поля.
+        """
+        all_info = [info.value for info in fild]
+        return all_info
 
     def change_address(self, address):
         """
