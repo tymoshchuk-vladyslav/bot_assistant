@@ -4,6 +4,8 @@ from bot_assistant.address_book_classes import SaveData
 import re
 
 
+
+
 class Notes(UserList, SaveData):
     ''' Загальний клас в якому зберігаються всі нотатки як екземплври класу Record'''
 
@@ -85,8 +87,10 @@ class Note:
         try:
             self.tag.value.remove(tag.lower())
         except:
-            return 'no such tag'
-
+            raise Exception('no such tag')
+       
+            
+            
     def __str__(self):
         return f'{Fore.GREEN}{self.tag.value}{Style.RESET_ALL}\n {Fore.BLUE}{self.body.value}{Style.RESET_ALL}\n' + 50*'-'  # + '\n'
 

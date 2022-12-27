@@ -5,6 +5,8 @@ from bot_assistant.sort import sort_fun
 import os.path
 
 
+
+
 """
 Бот помічник.
 Працює з командами (див функцію help.)
@@ -579,7 +581,7 @@ def change_tag(args):
             break
 
     while True:
-        tag = input("Введіть новий тег:\n")
+        tag = input("Введіть тег:\n")
         if tag == "cancel":
             return
         elif not tag:
@@ -589,8 +591,10 @@ def change_tag(args):
 
     if action == "add":
         NOTES[int(number) - 1].add_tag(tag)
+        return 'Tag was added'
     else:
         NOTES[int(number) - 1].del_tag(tag)
+        return 'Tag was deleted'
 
 
 @input_error
