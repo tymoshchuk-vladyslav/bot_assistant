@@ -5,8 +5,6 @@ from bot_assistant.sort import sort_fun
 import os.path
 
 
-
-
 """
 Бот помічник.
 Працює з командами (див функцію help.)
@@ -315,15 +313,12 @@ def search_contacts(args):
 
     result = ""
     contacts = PHONE_BOOK.search_contacts(args)
+
     if contacts:
         for contact in contacts:
-            name = contact.name.value
-            bd = contact.birthday
-            address = list(map(lambda x: str(x), contact.get_information(contact.address)))
-            email = list(map(lambda x: str(x), contact.get_information(contact.email_list)))
-            all_phones = list(map(lambda x: str(x), contact.get_information(contact.phones)))
-            result += f"{name} with:\n Phones:{', '.join(all_phones)} \n BD: {bd} \n email: {email} \n address: {address}\n"
+            result += show_contact([contact.name.value]) +'\n'
         return result
+     
     return f"no contacts with such request: {args[0]}"
 
 
