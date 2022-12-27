@@ -2,7 +2,6 @@ from colorama import Fore, Style
 from bot_assistant.bot_logic import show_logo, load, fun_name, analyze_fun, helps
 
 
-
 def main():
     """
     Логіка роботи бота помічника

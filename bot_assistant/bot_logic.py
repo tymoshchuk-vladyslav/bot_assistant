@@ -5,10 +5,6 @@ from bot_assistant.sort import sort_fun
 import os.path
 
 
-
-
-
-
 """
 Бот помічник.
 Працює з командами (див функцію help.)

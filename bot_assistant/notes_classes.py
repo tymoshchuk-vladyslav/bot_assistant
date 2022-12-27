@@ -4,9 +4,6 @@ from bot_assistant.address_book_classes import SaveData
 import re
 
 
-
-
-
 class Notes(UserList, SaveData):
     ''' Загальний клас в якому зберігаються всі нотатки як екземплври класу Record'''
 
