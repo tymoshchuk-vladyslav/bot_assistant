@@ -1,6 +1,5 @@
 from collections import UserList
 from colorama import Fore, Style
-from pickle import dump, load
 from bot_assistant.address_book_classes import SaveData
 import re
 
@@ -62,21 +61,6 @@ class Notes(UserList, SaveData):
             self.data.sort(key=lambda record: record.tag.value, reverse=True)
 
         return self.get_notes()
-
-    # def save_notes(self):
-    #     '''серіалізує'''
-    #     filename = r"save_data/save_notes.bin"
-    #     with open(filename, "wb") as file:
-    #         dump(self.data, file)
-    #
-    # def load_notes(self):
-    #     '''десереалізує'''
-    #     filename = r"save_data/save_notes.bin"
-    #     try:
-    #         with open(filename, "rb") as file:
-    #             self.data = load(file)
-    #     except FileNotFoundError:
-    #         return
 
 
 class Note:

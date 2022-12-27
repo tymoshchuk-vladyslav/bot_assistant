@@ -667,11 +667,14 @@ def load(*args):
     global NOTES
     global PHONE_BOOK
 
-    if os.path.isfile("save_data/save_notes.bin"):
-        NOTES = NOTES.load_data("save_data/save_notes.bin")
+    path_addressbook = "save_data/save_data.bin"
+    path_notes = "save_data/save_notes.bin"
 
-    if os.path.isfile("save_data/save_data.bin"):
-        PHONE_BOOK = PHONE_BOOK.load_data("save_data/save_data.bin")
+    if os.path.isfile(path_notes):
+        NOTES = Notes(NOTES.load_data(path_notes))
+
+    if os.path.isfile(path_addressbook):
+        PHONE_BOOK = AddressBook(PHONE_BOOK.load_data(path_addressbook))
 
     return f"{Fore.RED}data loaded{Style.RESET_ALL}"
 
