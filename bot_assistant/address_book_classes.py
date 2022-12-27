@@ -150,14 +150,18 @@ class Record:
                f'{Fore.BLUE}Birthday:{Style.RESET_ALL}{self.birthday} \n' \
                f'{Fore.BLUE}   Email:{Style.RESET_ALL}{self.get_emails()}'
 
-    def add_address(self, address):
-        """
-        Метод для додавання нового адресу до рекорду.
-        Додається до списку як екземпляр класу AddressContact.
-        :param address:
-        :return:
-        """
-        self.address.append(AddressContact(address))
+    @staticmethod
+    def add_information(list_info, info):
+        list_info.append(info)
+
+    # def add_address(self, address):
+    #     """
+    #     Метод для додавання нового адресу до рекорду.
+    #     Додається до списку як екземпляр класу AddressContact.
+    #     :param address:
+    #     :return:
+    #     """
+    #     self.address.append(AddressContact(address))
 
     def add_birthday(self, birthday):
         """
@@ -166,18 +170,18 @@ class Record:
         """
         self.birthday = Birthday(birthday)
 
-    def add_phone(self, phone):
-        """
-        Метод для додавання номера телефону до рекорду.
-        Додається до списку як екземпляр класу Phone.
-        """
-        self.phones.append(Phone(phone))
-
-    def add_email(self, email):
-        """
-        Метод для додавання нової ел. пошти до контакта.
-        """
-        self.email_list.append(EmailContact(email))
+    # def add_phone(self, phone):
+    #     """
+    #     Метод для додавання номера телефону до рекорду.
+    #     Додається до списку як екземпляр класу Phone.
+    #     """
+    #     self.phones.append(Phone(phone))
+    #
+    # def add_email(self, email):
+    #     """
+    #     Метод для додавання нової ел. пошти до контакта.
+    #     """
+    #     self.email_list.append(EmailContact(email))
 
     def get_phones(self):
         """

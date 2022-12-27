@@ -1,4 +1,4 @@
-from bot_assistant.address_book_classes import AddressBook, Birthday, Phone, Record
+from bot_assistant.address_book_classes import AddressBook, AddressContact, Birthday, EmailContact, Phone, Record
 from colorama import Fore, Style
 from bot_assistant.notes_classes import Notes, Note, Tag, Body
 from bot_assistant.sort import sort_fun
@@ -70,11 +70,11 @@ def add_address(args):
         return f" {name} імя не знайдено в словнику"
 
     if address:
-        PHONE_BOOK[name].add_address(address)
+        PHONE_BOOK[name].add_information(PHONE_BOOK[name].address, AddressContact(address))
         return f" {address} was added to {name}"
 
     user_address = input("Введіть адресу: ")
-    PHONE_BOOK[name].add_address(user_address)
+    PHONE_BOOK[name].add_information(PHONE_BOOK[name].address, AddressContact(user_address))
     return f" {user_address} was added to {name}"
 
 
@@ -96,11 +96,11 @@ def add_phone(args):
         return f"{name} імя не знайдено в словнику"
 
     if phone:
-        PHONE_BOOK[name].add_phone(phone)
+        PHONE_BOOK[name].add_information(PHONE_BOOK[name].phones, Phone(phone))
         return f" {phone} was added to {name}"
 
     user_phone = input("Введіть телефон: ")
-    PHONE_BOOK[name].add_phone(user_phone)
+    PHONE_BOOK[name].add_information(PHONE_BOOK[name].phones, Phone(user_phone))
     return f" {user_phone} was added to {name}"
 
 
@@ -148,11 +148,11 @@ def add_email(args):
         return f"{name} імя не знайдено в словнику"
 
     if email:
-        PHONE_BOOK[name].add_email(email)
+        PHONE_BOOK[name].add_information(PHONE_BOOK[name].email_list, EmailContact(email))
         return f" {email} was added to {name}"
 
     user_email = input("Введіть email: ")
-    PHONE_BOOK[name].add_email(user_email)
+    PHONE_BOOK[name].add_information(PHONE_BOOK[name].email_list, EmailContact(user_email))
     return f" {user_email} was added to {name}"
 
 
