@@ -18,7 +18,38 @@ EmailContact(Field)
 """
 
 
-class AddressBook(UserDict):
+class SaveData:
+    """
+    Клас який відповідає за сереалізацію та десереалізацію.
+    """
+
+    def __init__(self, data, path):
+        self.data = data
+        self.path = path
+
+    def dump_data(self, data, path):
+        """
+        Метод для сереалізації даних в файл path за допомогою pickle.
+        """
+        self.data = data
+        self.path = path
+
+        with open(self.path, "wb") as file:
+            dump(self.data, file)
+
+    def load_data(self, path):
+        """
+        Метод для десереалізації даних з файлу path за допомогою pickle.
+        """
+
+        self.path = path
+
+        with open(self.path, "rb") as file:
+            new_data = load(file)
+            return new_data
+
+
+class AddressBook(UserDict, SaveData):
     """
     Клас книги контактів.
     Батьківський клас UserDict.
@@ -36,21 +67,6 @@ class AddressBook(UserDict):
         """
         deleted = self.data.pop(name)
         return deleted.name.value
-
-    def dump_data(self):
-        """
-        Метод для сереалізації даних в файл save_data.bin за допомогою pickle.
-        """
-        with open("save_data/save_data.bin", "wb") as file:
-            dump(self.data, file)
-
-    def load_data(self):
-        """
-        Метод для десереалізації даних з файлу save_data.bin за допомогою pickle.
-        """
-        with open("save_data/save_data.bin", "rb") as file:
-            new_data = load(file)
-            self.data = new_data
 
     def search_contacts(self, search_value):
         """
