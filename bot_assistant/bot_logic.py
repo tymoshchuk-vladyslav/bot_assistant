@@ -195,7 +195,7 @@ def del_birthday(args):
 
     if PHONE_BOOK[name].birthday:
         PHONE_BOOK[name].birthday = None
-        return f"{name} was deleted"
+        return f"Birthday {name} was deleted"
 
     return "no info about birthday"
 
@@ -208,22 +208,26 @@ def change_address(args):
     :return:
     """
     if not args:
-        raise ValueError("Не було передано ім'я контакту...")
+        return "Передайте ім'я контакту та адресу"
 
     name = args[0].capitalize()
+    address = None
+
+    if args[1:]:
+        address = args[1:][0]
 
     if name not in PHONE_BOOK:
         return f"{name} імя не знайдено в словнику"
 
     record = PHONE_BOOK[name]
-    user_address = input("Введіть адресу: ")
 
-    result = record.change_address(user_address)
+    if address:
+        record.change_information(AddressContact(address), record.address)
+        return f" {address} was changed to {name}"
 
-    if result in "У контакту немає адреси.":
-        return "У контакту немає адреси."
-
-    return f"у контакту {name} замінено адресу на: {result}"
+    user_address = input("Введіть нову адресу: ")
+    record.change_information(AddressContact(user_address), record.address)
+    return f" {user_address} was changed to {name}"
 
 
 @input_error
@@ -232,40 +236,53 @@ def change_phone(args):
     Функція для заміни телефону
     """
     if not args:
-        return "Передайте ім'я контакту та новий номер"
-    elif not args[1:]:
-        return "Ви не передали новий номер телефону"
+        return "Передайте ім'я контакту та телефон"
 
     name = args[0].capitalize()
-    new_phone = args[1:][0]
+    phone = None
+
+    if args[1:]:
+        phone = args[1:][0]
 
     if name not in PHONE_BOOK:
-        return f"{name} ім'я не знайдено в словнику."
+        return f"{name} імя не знайдено в словнику"
 
     record = PHONE_BOOK[name]
-    result = record.change_phone(new_phone)
 
-    return result
+    if phone:
+        record.change_information(Phone(phone), record.phones)
+        return f" {phone} was changed to {name}"
+
+    user_phone = input("Введіть телефон: ")
+    record.change_information(Phone(user_phone), record.phones)
+    return f" {user_phone} was changed to {name}"
 
 
 @input_error
-def change_email(name):
+def change_email(args):
     """
     Функція для редагування електронної пошти контакту.
     """
+    if not args:
+        return "Передайте ім'я контакту та email"
 
-    if not name:
-        return "Не було введенно жодного аргументу..."
-
-    name = name[0].title()
+    name = args[0].capitalize()
+    email = None
+    if args[1:]:
+        email = args[1:][0]
 
     if name not in PHONE_BOOK:
-        return f" {name} імя не знайдено в адресній книзі, ви можете додайте {name} ввівши команду 'add'."
+        return f"{name} імя не знайдено в словнику"
 
     record = PHONE_BOOK[name]
-    user_email = input(f"Введіть нову ел. пошту {name}: ")
-    result = record.change_email(user_email)
-    return result
+
+    if email:
+        record.change_information(EmailContact(email), record.email_list)
+        return f" {email} was changed to {name}"
+
+    user_email = input("Введіть email: ")
+    record.change_information(EmailContact(user_email), record.email_list)
+    return f" {user_email} was changed to {name}"
 
 
 @input_error
@@ -363,7 +380,7 @@ def delete_address(args):
         return f"{name} ім'я не знайдено у словнику"
 
     record = PHONE_BOOK[name]
-    result = record.delete_address()
+    result = record.delete_information(record.address)
 
     return result
 
@@ -382,7 +399,7 @@ def delete_phone(args):
         return f"{name} ім'я не знайдено у словнику"
 
     record = PHONE_BOOK[name]
-    result = record.delete_phone()
+    result = record.delete_information(record.phones)
 
     return result
 
@@ -402,7 +419,7 @@ def delete_email(name):
         return f" {name} імя не знайдено в адресній книзі, ви можете додати {name} ввівши команду add."
 
     record = PHONE_BOOK[name]
-    result = record.delete_email()
+    result = record.delete_information(record.email_list)
     return result
 
 

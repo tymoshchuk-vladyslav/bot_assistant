@@ -154,20 +154,11 @@ class Record:
                f'{Fore.BLUE}   Email:{Style.RESET_ALL}{self.get_information(self.email_list)}'
 
     @staticmethod
-    def add_information(list_info, fild):
+    def add_information(list_info, field):
         """
         Метод для додавання інформації до списків phones, address, email_list.
         """
-        list_info.append(fild)
-
-    # def add_address(self, address):
-    #     """
-    #     Метод для додавання нового адресу до рекорду.
-    #     Додається до списку як екземпляр класу AddressContact.
-    #     :param address:
-    #     :return:
-    #     """
-    #     self.address.append(AddressContact(address))
+        list_info.append(field)
 
     def add_birthday(self, birthday):
         """
@@ -176,211 +167,64 @@ class Record:
         """
         self.birthday = Birthday(birthday)
 
-    # def add_phone(self, phone):
-    #     """
-    #     Метод для додавання номера телефону до рекорду.
-    #     Додається до списку як екземпляр класу Phone.
-    #     """
-    #     self.phones.append(Phone(phone))
-    #
-    # def add_email(self, email):
-    #     """
-    #     Метод для додавання нової ел. пошти до контакта.
-    #     """
-    #     self.email_list.append(EmailContact(email))
-
-    # def get_phones(self):
-    #     """
-    #     Метод для певернення списку всіх номерів телефонів.
-    #     """
-    #     all_phones = [phone.value for phone in self.phones]
-    #     return all_phones
-
-    # def get_addresses(self):
-    #     """
-    #     Метод для повернення списку всіх адрес.
-    #     """
-    #     all_address = [address.value for address in self.address]
-    #     return all_address
-    #
-    # def get_emails(self):
-    #     all_emails = [email.value for email in self.email_list]
-    #     return all_emails
-
     @staticmethod
-    def get_information(fild):
+    def get_information(field):
         """
         Метод для повернення списку відповідно переданого поля.
         """
-        all_info = [info.value for info in fild]
+        all_info = [info.value for info in field]
         return all_info
 
-    def change_address(self, address):
+    @staticmethod
+    def change_information(new_info, field):
         """
-        Метод для редагування адрес у контакту.
-        :param address:
-        :return:
+        Метод для редагування phone, address, email.
         """
-
-        if not self.address:
+        if not field:
             return f"У контакту немає адреси."
 
-        elif len(self.address) == 1:
-            self.address[0] = AddressContact(address)
-            return f"{address}"
+        elif len(field) == 1:
+            field[0] = new_info
+            return f"{new_info}"
 
-        elif len(self.address) > 1:
+        elif len(field) > 1:
             i = -1
             print(f"Виберіть адресу контакту для редагування.")
-            for adr in self.address:
+            for f in field:
                 i += 1
-                print(f"№  {i}  :  {adr.value}")
+                print(f"№  {i}  :  {f.value}")
             inp_user = int(input(f"Введіть №..."))
 
             if inp_user not in range(0, i + 1):
                 raise ValueError("Такого номеру немає в списку адрес.")
 
-            self.address[inp_user] = AddressContact(address)
-            return f"{address}"
+            field[inp_user] = new_info
+            return f"{new_info.value}"
 
-    def change_phone(self, new_phone):
-        """
-        метод заміни номеру телефона
-        """
-        if not self.phones:
-            self.phones.append(Phone(new_phone))
-            return f"{new_phone} був доданий до словника для контакту {self.name.value}"
-
-        if len(self.phones) == 1:
-            old_phone = self.phones[0].value
-            self.phones[0] = Phone(new_phone)
-            return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
-
-        if len(self.phones) > 1:
-            i = -1
-            print("Виберіть телефон для заміни на новий.")
-            for phone in self.phones:
-                i += 1
-                print(f"№ {i} : {phone.value}")
-            inp_user = int(input(f"Введіть №..."))
-
-            if inp_user not in range(0, i + 1):
-                raise ValueError("Такого номеру немає в списку телефонів.")
-
-            old_phone = self.phones[inp_user].value
-            self.phones[inp_user] = Phone(new_phone)
-            return f"{old_phone} був замінений на {new_phone} для контакту {self.name.value}"
-
-    def change_email(self, new_email):
-        """
-        Метод для редагування ел. пошти у контакта.
-        """
-        if not self.email_list:
-            return f"{self.name.value} ще не має ел. пошти."
-        elif len(self.email_list) == 1:
-            old_email = self.email_list[0].value
-            self.email_list[0] = EmailContact(new_email)
-            return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
-        else:
-            print("Виберіть ел. пошту, для редагування.")
-            i = -1
-            for e_mail in self.email_list:
-                i += 1
-                print(f"№  {i}  :  {e_mail.value}")
-
-            user_choice = int(input("Виберіть № для заміни: "))
-
-            if user_choice not in range(0, i + 1):
-                return f"Такого номеру немає в списку емейлів..."
-
-            elif user_choice in range(0, i + 1):
-                old_email = self.email_list[user_choice].value
-                self.email_list[user_choice] = EmailContact(new_email)
-
-                return f"{old_email} був замінений на {new_email} для контакту {self.name.value}"
-            else:
-                return "Ви ввели невірне значення. Спробуйте ще раз."
-
-    def delete_address(self):
+    def delete_information(self, field):
         """
         Метод для видалення адреси у контакту.
         """
-        if not self.address:
-            return f"{self.name.value} не має адреси"
+        if not field:
+            return f"{self.name.value} не має даних"
 
-        if len(self.address) == 1:
-            address_to_delete = self.address.pop(0)
-            return f"Адрес: {address_to_delete.value}, був видалений для контакту {self.name.value}"
+        if len(field) == 1:
+            info_to_delete = field.pop(0)
+            return f"Значення: {info_to_delete.value}, був видалений для контакту {self.name.value}"
 
         else:
             i = -1
-            print("Виберіть який телефон хочете видалити")
-            for adr in self.address:
+            print("Виберіть з списку що хочете видалити")
+            for f in field:
                 i += 1
-                print(f"№ {i} : {adr.value}")
+                print(f"№ {i} : {f.value}")
             inp_user = int(input(f"Введіть №..."))
 
             if inp_user not in range(0, i + 1):
-                raise ValueError("Такого номеру немає в списку адрес.")
+                raise ValueError("Такого номеру немає в списку.")
 
-            address_to_delete = self.address.pop(inp_user)
-            return f"Адрес: {address_to_delete.value}, був видалений для контакту {self.name.value}"
-
-    def delete_phone(self):
-        """
-        метод для видалення номеру телефона
-        """
-        if not self.phones:
-            return f"{self.name.value} не має няіких номерів"
-
-        if len(self.phones) == 1:
-            phone_to_delete = self.phones.pop(0)
-            return f"{phone_to_delete.value} був видалений для контакту {self.name.value}"
-
-        else:
-            i = -1
-            print("Виберіть який телефон хочете видалити")
-            for phone in self.phones:
-                i += 1
-                print(f"№ {i} : {phone.value}")
-            inp_user = int(input(f"Введіть №..."))
-
-            if inp_user not in range(0, i + 1):
-                raise ValueError("Такого номеру немає в списку телефонів.")
-
-            phone_to_delete = self.phones.pop(inp_user)
-            return f"{phone_to_delete.value} був видалений для контакту {self.name.value}"
-
-    def delete_email(self):
-        """
-        Метод для видалення ел. пошти у контакта.
-        """
-        if not self.email_list:
-            return f"{self.name.value} не має ел. пошти, для видалення."
-
-        elif len(self.email_list) == 1:
-            deleting_email = self.email_list.pop(0)
-            return f"{deleting_email.value} був видалений для контакту {self.name.value}"
-
-        else:
-            print("Виберіть необхідну для видалення ел. пошту.")
-            i = -1
-
-            for e_mail in self.email_list:
-                i += 1
-                print(f"№  {i}  :  {e_mail.value}")
-
-            user_choice = int(input("Введіть № - "))
-
-            if user_choice not in range(0, i + 1):
-                return f"Такого номеру немає в списку емейлів..."
-
-            if user_choice in range(0, i + 1):
-                deleting_email = self.email_list.pop(user_choice)
-                return f"{deleting_email.value} був видалений для контакту {self.name.value}"
-
-            else:
-                return "Ви ввели невірне значення. Спробуйте ще раз."
+            info_to_delete = field.pop(inp_user)
+            return f"Значення: {info_to_delete.value}, був видалений для контакту {self.name.value}"
 
 
 class Field:
@@ -469,7 +313,19 @@ class AddressContact(Field):
     Адрес контакту.
     Додається до списку address, який створюється при ініціалізації класу Record.
     """
-    pass
+
+    def __init__(self, value):
+        super().__init__(value)
+
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, new_value):
+        if not new_value:
+            raise ValueError("Адрес не повинен бути пустий...")
+        self.__value = new_value
 
 
 class EmailContact(Field):
