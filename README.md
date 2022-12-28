@@ -32,7 +32,15 @@ $ pip install [folder path pyproject.toml]
 
 ## Usage
 
-console script
+Console script.
+
+Command for start script:
+
+```commandline
+    bot-assistant
+```
+
+Commands:
 
 ```sh
     help - show all comand
