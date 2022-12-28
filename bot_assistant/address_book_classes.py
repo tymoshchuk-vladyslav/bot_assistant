@@ -150,8 +150,8 @@ class Record:
         return f'{Fore.BLUE}    Name:{Style.RESET_ALL}{self.name.value} \n' \
                f'{Fore.BLUE}  Phones:{Style.RESET_ALL}{self.get_information(self.phones)} \n' \
                f'{Fore.BLUE} Address:{Style.RESET_ALL}{self.get_information(self.address)} \n' \
-               f'{Fore.BLUE}Birthday:{Style.RESET_ALL}{self.birthday} \n' \
-               f'{Fore.BLUE}   Email:{Style.RESET_ALL}{self.get_information(self.email_list)}'
+               f'{Fore.BLUE}   Email:{Style.RESET_ALL}{self.get_information(self.email_list)} \n'\
+               f'{Fore.BLUE}Birthday:{Style.RESET_ALL}{self.birthday} '
 
     @staticmethod
     def add_information(list_info, field):
