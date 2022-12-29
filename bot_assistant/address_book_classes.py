@@ -1,8 +1,10 @@
 from collections import UserDict
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 from datetime import date, timedelta
 from pickle import load, dump
 import re
+
+init()
 
 
 """

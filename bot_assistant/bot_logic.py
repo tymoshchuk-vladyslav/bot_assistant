@@ -1,9 +1,11 @@
 from appdirs import AppDirs
 from bot_assistant.address_book_classes import AddressBook, AddressContact, Birthday, EmailContact, Phone, Record
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 from bot_assistant.notes_classes import Notes, Note, Tag, Body
 from bot_assistant.sort import sort_fun
 import os.path
+
+init()
 
 
 """
