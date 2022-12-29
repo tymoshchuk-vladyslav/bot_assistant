@@ -1,3 +1,4 @@
+from appdirs import AppDirs
 from bot_assistant.address_book_classes import AddressBook, AddressContact, Birthday, EmailContact, Phone, Record
 from colorama import Fore, Style
 from bot_assistant.notes_classes import Notes, Note, Tag, Body
@@ -12,6 +13,8 @@ import os.path
 
 PHONE_BOOK = AddressBook()
 NOTES = Notes()
+
+DIRS = AppDirs("bot_assistant_save", "unbreakable")
 
 
 def input_error(func):
@@ -662,17 +665,18 @@ def save(*args):
     """
     Функція збереження data.
     """
+    global DIRS
 
-    if not os.path.isdir("save_data"):
-        os.mkdir("save_data")
+    if not os.path.isdir(DIRS.user_data_dir):
+        os.mkdir(DIRS.user_data_dir)
 
-    path_addressbook = "save_data/save_data.bin"
-    path_notes = "save_data/save_notes.bin"
+    path_addressbook = os.path.abspath(DIRS.user_data_dir + "/save_data.bin")
+    path_notes = os.path.abspath(DIRS.user_data_dir + "/save_notes.bin")
 
     NOTES.dump_data(NOTES.data, path_notes)
     PHONE_BOOK.dump_data(PHONE_BOOK.data, path_addressbook)
 
-    return f"{Fore.RED}data saved{Style.RESET_ALL}"
+    return f"{Fore.RED}data saved in {DIRS.user_data_dir}{Style.RESET_ALL}"
 
 
 @input_error
@@ -680,11 +684,12 @@ def load(*args):
     """
     Функція завантаження data.
     """
+    global DIRS
     global NOTES
     global PHONE_BOOK
 
-    path_addressbook = "save_data/save_data.bin"
-    path_notes = "save_data/save_notes.bin"
+    path_addressbook = os.path.abspath(DIRS.user_data_dir + "/save_data.bin")
+    path_notes = os.path.abspath(DIRS.user_data_dir + "/save_notes.bin")
 
     if os.path.isfile(path_notes):
         NOTES = Notes(NOTES.load_data(path_notes))
@@ -692,7 +697,7 @@ def load(*args):
     if os.path.isfile(path_addressbook):
         PHONE_BOOK = AddressBook(PHONE_BOOK.load_data(path_addressbook))
 
-    return f"{Fore.RED}data loaded{Style.RESET_ALL}"
+    return f"{Fore.RED}data loaded in {DIRS.user_data_dir}{Style.RESET_ALL}"
 
 
 # def parser(text):

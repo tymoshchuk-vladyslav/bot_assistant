@@ -33,7 +33,6 @@ class SaveData:
         """
         self.data = data
         self.path = path
-
         with open(self.path, "wb") as file:
             dump(self.data, file)
 

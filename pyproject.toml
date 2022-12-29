@@ -15,7 +15,8 @@ classifiers = [
 ]
 
 dependencies = [
-    "colorama"
+    "colorama",
+    "appdirs"
 ]
 
 [project.scripts]
