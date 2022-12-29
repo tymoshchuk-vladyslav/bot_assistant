@@ -697,7 +697,7 @@ def load(*args):
     if os.path.isfile(path_addressbook):
         PHONE_BOOK = AddressBook(PHONE_BOOK.load_data(path_addressbook))
 
-    return f"{Fore.RED}data loaded in {DIRS.user_data_dir}{Style.RESET_ALL}"
+    return f"{Fore.RED}data loaded from {DIRS.user_data_dir}{Style.RESET_ALL}"
 
 
 # def parser(text):
