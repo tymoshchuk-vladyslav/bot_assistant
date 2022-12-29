@@ -668,7 +668,7 @@ def save(*args):
     global DIRS
 
     if not os.path.isdir(DIRS.user_data_dir):
-        os.mkdir(DIRS.user_data_dir)
+        os.makedirs(DIRS.user_data_dir)
 
     path_addressbook = os.path.abspath(DIRS.user_data_dir + "/save_data.bin")
     path_notes = os.path.abspath(DIRS.user_data_dir + "/save_notes.bin")
