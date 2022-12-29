@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bot-assistant"
+description = "Бот асистент працює з книгою контактів, сортує файли, веде нотатки."
+readme = "README.md"
+requires-python = ">=3.10"
+version = "1.0.0"
+
+classifiers = [
+    "Scripts :: bot-assistant",
+    "Programming Language :: Python :: 3",
+]
+
+dependencies = [
+    "colorama",
+    "appdirs"
+]
+
+[project.scripts]
+bot-assistant = "bot_assistant.main:main"
