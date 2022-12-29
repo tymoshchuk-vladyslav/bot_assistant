@@ -1,7 +1,9 @@
 from collections import UserList
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 from bot_assistant.address_book_classes import SaveData
 import re
+
+init()
 
 
 class Notes(UserList, SaveData):

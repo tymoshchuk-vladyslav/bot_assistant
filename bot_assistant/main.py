@@ -1,5 +1,7 @@
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 from bot_assistant.bot_logic import show_logo, load, fun_name, analyze_fun, helps
+
+init()
 
 
 def main():

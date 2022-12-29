@@ -1,8 +1,10 @@
 from collections import UserDict
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 from datetime import date, timedelta
 from pickle import load, dump
 import re
+
+init()
 
 
 """
@@ -33,7 +35,6 @@ class SaveData:
         """
         self.data = data
         self.path = path
-
         with open(self.path, "wb") as file:
             dump(self.data, file)
 
